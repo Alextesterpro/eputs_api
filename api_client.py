@@ -65,3 +65,69 @@ class SimpleAPIClient:
     def delete_incident(self, incident_id):
         """Удалить инцидент"""
         return requests.delete(f"{self.base_url}/incident/{incident_id}", headers=self.headers, verify=False)
+    
+    # === EVENTS ===
+    def get_events_list(self):
+        """Получить список событий"""
+        return requests.get(f"{self.base_url}/event", headers=self.headers, verify=False)
+    
+    def get_event_by_id(self, event_id):
+        """Получить событие по ID"""
+        return requests.get(f"{self.base_url}/event/{event_id}", headers=self.headers, verify=False)
+    
+    def create_event(self, name, description):
+        """Создать событие"""
+        data = {"name": name, "description": description}
+        return requests.post(f"{self.base_url}/event", json=data, headers=self.headers, verify=False)
+    
+    def update_event(self, event_id, **fields):
+        """Обновить событие"""
+        return requests.put(f"{self.base_url}/event/{event_id}", json=fields, headers=self.headers, verify=False)
+    
+    def delete_event(self, event_id):
+        """Удалить событие"""
+        return requests.delete(f"{self.base_url}/event/{event_id}", headers=self.headers, verify=False)
+    
+    # === CATEGORIES ===
+    def get_categories_list(self):
+        """Получить список категорий"""
+        return requests.get(f"{self.base_url}/category", headers=self.headers, verify=False)
+    
+    def get_category_by_id(self, category_id):
+        """Получить категорию по ID"""
+        return requests.get(f"{self.base_url}/category/{category_id}", headers=self.headers, verify=False)
+    
+    def create_category(self, name, description):
+        """Создать категорию"""
+        data = {"name": name, "description": description}
+        return requests.post(f"{self.base_url}/category", json=data, headers=self.headers, verify=False)
+    
+    def update_category(self, category_id, **fields):
+        """Обновить категорию"""
+        return requests.put(f"{self.base_url}/category/{category_id}", json=fields, headers=self.headers, verify=False)
+    
+    def delete_category(self, category_id):
+        """Удалить категорию"""
+        return requests.delete(f"{self.base_url}/category/{category_id}", headers=self.headers, verify=False)
+    
+    # === KEYWORDS ===
+    def get_keywords_list(self):
+        """Получить список ключевых слов"""
+        return requests.get(f"{self.base_url}/keyword", headers=self.headers, verify=False)
+    
+    def get_keyword_by_id(self, keyword_id):
+        """Получить ключевое слово по ID"""
+        return requests.get(f"{self.base_url}/keyword/{keyword_id}", headers=self.headers, verify=False)
+    
+    def create_keyword(self, name, description):
+        """Создать ключевое слово"""
+        data = {"name": name, "description": description}
+        return requests.post(f"{self.base_url}/keyword", json=data, headers=self.headers, verify=False)
+    
+    def update_keyword(self, keyword_id, **fields):
+        """Обновить ключевое слово"""
+        return requests.put(f"{self.base_url}/keyword/{keyword_id}", json=fields, headers=self.headers, verify=False)
+    
+    def delete_keyword(self, keyword_id):
+        """Удалить ключевое слово"""
+        return requests.delete(f"{self.base_url}/keyword/{keyword_id}", headers=self.headers, verify=False)

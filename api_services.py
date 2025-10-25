@@ -6,8 +6,8 @@
 from api_client import SimpleAPIClient
 
 
-class SimpleIncidentService:
-    """Простой сервис для работы с инцидентами"""
+class SimpleAPIService:
+    """Универсальный сервис для работы с API"""
     
     def __init__(self):
         self.client = SimpleAPIClient()
@@ -67,3 +67,130 @@ class SimpleIncidentService:
             return response.status_code in [200, 401]
         except:
             return False
+    
+    # === EVENTS ===
+    def get_all_events(self):
+        """Получить все события"""
+        response = self.client.get_events_list()
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения списка событий: {response.status_code}")
+    
+    def get_event_by_id(self, event_id):
+        """Получить событие по ID"""
+        response = self.client.get_event_by_id(event_id)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения события: {response.status_code}")
+    
+    def create_event(self, name, description):
+        """Создать новое событие"""
+        response = self.client.create_event(name, description)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка создания события: {response.status_code}")
+    
+    def update_event(self, event_id, **fields):
+        """Обновить событие"""
+        response = self.client.update_event(event_id, **fields)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка обновления события: {response.status_code}")
+    
+    def delete_event(self, event_id):
+        """Удалить событие"""
+        response = self.client.delete_event(event_id)
+        if response.status_code in [200, 204]:
+            return True
+        else:
+            raise Exception(f"Ошибка удаления события: {response.status_code}")
+    
+    # === CATEGORIES ===
+    def get_all_categories(self):
+        """Получить все категории"""
+        response = self.client.get_categories_list()
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения списка категорий: {response.status_code}")
+    
+    def get_category_by_id(self, category_id):
+        """Получить категорию по ID"""
+        response = self.client.get_category_by_id(category_id)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения категории: {response.status_code}")
+    
+    def create_category(self, name, description):
+        """Создать новую категорию"""
+        response = self.client.create_category(name, description)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка создания категории: {response.status_code}")
+    
+    def update_category(self, category_id, **fields):
+        """Обновить категорию"""
+        response = self.client.update_category(category_id, **fields)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка обновления категории: {response.status_code}")
+    
+    def delete_category(self, category_id):
+        """Удалить категорию"""
+        response = self.client.delete_category(category_id)
+        if response.status_code in [200, 204]:
+            return True
+        else:
+            raise Exception(f"Ошибка удаления категории: {response.status_code}")
+    
+    # === KEYWORDS ===
+    def get_all_keywords(self):
+        """Получить все ключевые слова"""
+        response = self.client.get_keywords_list()
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения списка ключевых слов: {response.status_code}")
+    
+    def get_keyword_by_id(self, keyword_id):
+        """Получить ключевое слово по ID"""
+        response = self.client.get_keyword_by_id(keyword_id)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения ключевого слова: {response.status_code}")
+    
+    def create_keyword(self, name, description):
+        """Создать новое ключевое слово"""
+        response = self.client.create_keyword(name, description)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка создания ключевого слова: {response.status_code}")
+    
+    def update_keyword(self, keyword_id, **fields):
+        """Обновить ключевое слово"""
+        response = self.client.update_keyword(keyword_id, **fields)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка обновления ключевого слова: {response.status_code}")
+    
+    def delete_keyword(self, keyword_id):
+        """Удалить ключевое слово"""
+        response = self.client.delete_keyword(keyword_id)
+        if response.status_code in [200, 204]:
+            return True
+        else:
+            raise Exception(f"Ошибка удаления ключевого слова: {response.status_code}")
+
+
+# Для обратной совместимости
+SimpleIncidentService = SimpleAPIService
