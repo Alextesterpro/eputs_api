@@ -1,0 +1,12 @@
+# config/config.py
+BASE_URL = "http://91.227.17.139/services/transport-passenger"
+TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiNmQ4NzNhNzk5ZmQyYjE5YWZjYTJjZDY1OGJmN2Q4NGNkN2IxMWJmYzNkYTY2NjIzODMyYTI2ZDczZjcxODQ4MDk5YTA2MGQwNmRmZWJkODAiLCJpYXQiOjE3NDU5MjMxMjMuMjU0MTA5LCJuYmYiOjE3NDU5MjMxMjMuMjU0MTY3LCJleHAiOjE3NDcyMTkxMjIuNTM5MjA2LCJzdWIiOiIyNCIsInNjb3BlcyI6W10sIm9yZ2FuaXphdGlvbl9pZF9saXN0IjpbXSwiaWRlbnRpZmllciI6ImEudmVzZWxvdl9BQUFfZm9ybWF0dHdvLnJ1XzE3MjQ3NDYzNjYuMzQ2MyIsImVtYWlsIjoiYS52ZXNlbG92QGZvcm1hdHR3by5ydSIsInVzZXJfbmFtZSI6ImEudmVzZWxvdkBmb3JtYXR0d28ucnUiLCJmaXJzdF9uYW1lIjoi0JDQu9C10LrRgdCw0L3QtNGAIiwibGFzdF9uYW1lIjoi0JLQtdGB0LXQu9C-0LIiLCJtaWRkbGVfbmFtZSI6ItCS0LjQutGC0L7RgNC-0LLQuNGHIn0.WUoNMR-NiW5r7GX8TiEMaFzl_II_DmE-Rw0Cx4zWnqHOBMK5uk5xl5wVycejYsOKm6FMKq8kE_wawr_mWhTEM6ZUMqflixBWcWiDsButLCOEDsFRPJzMbilk_yoUi6ROxwaKQH-trU-rGnC0XY8idV_8FT8Jx8BOtcHx9horyQz-F1LxTDaWpZ10-PYLKfaxC4mNk09BlSOp-fRK7wohCRXvTylR0YmdRRoxM87LzUvzF8xnzq0G-UG5GTM0b3siGl-7XwtKICCm5HRnlWt321bcZh1Grlm-WKXhyJUaCu3cokj8IwCZrW-CPrQbSPtxoSRX4ohWreYeO-XYOjewC8grwnSOmjr3vKosM7WGitko95YpuzOloj5F_XuWFRVPWgIBKYW3ugLA5dqfaTRAwiymc9GWHJa7pYtkRtMDTADee9tZvas2Zl1meXs3fE6B-BkineyYiEt7HrK6BtXRT2w1rR1oe-rbmXMfLetSMC10aKU1jVg03c0etDoi5FxxZSGLPzgTJxg22z5ChCDCV69V9l_c46uyRCrF7QO59qblffuUeTo_VbVWP40_-bcJCfFuhv5YVyKPCTe2ozvKOPzzNqPiz2R7oh1taphYvK_Tqng_qtmkXudFr4sCn5-bLxTTGxxySAo3hylLYWzT4ND1KfgXsNW6slS_4okV-Pk"
+HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
+    "Authorization": f"Bearer {TOKEN}",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+    "Content-Type": "application/json",
+}
+TIMEOUT = 10 

@@ -1,0 +1,7 @@
+allure-python-commons~=2.13.5
+pytest~=8.3.4
+requests~=2.32.3
+python-dotenv~=1.1.0
+requests==2.31.0
+pytest==8.1.1
+pyyaml
