@@ -53,48 +53,39 @@ class TestEvents:
     
     def test_events_create(self, api_service):
         """Тест создания события"""
-        try:
-            name = f"Тест событие {datetime.now().strftime('%H:%M:%S')}"
-            description = "Простое тестовое событие"
-            
-            result = api_service.create_event(name, description)
-            assert result is not None, "Создание не работает"
-            assert "data" in result, "Нет поля data"
-            print("Events create работает")
-        except Exception as e:
-            print(f"Events create: {e}")
+        name = f"Тест событие {datetime.now().strftime('%H:%M:%S')}"
+        description = "Простое тестовое событие"
+        
+        result = api_service.create_event(name, description)
+        assert result is not None, "Создание не работает"
+        assert "data" in result, "Нет поля data"
+        print("Events create работает")
     
     def test_events_update(self, api_service):
         """Тест обновления события"""
-        try:
-            # Сначала получаем существующее событие
-            events = api_service.get_all_events()
-            if events.get("data") and len(events["data"]) > 0:
-                event_id = events["data"][0].get("id")
-                if event_id:
-                    result = api_service.update_event(event_id, description="Обновлено")
-                    assert result is not None, "Обновление не работает"
-                    print("Events update работает")
-            else:
-                pytest.skip("Нет событий для обновления")
-        except Exception as e:
-            print(f"Events update: {e}")
+        # Сначала получаем существующее событие
+        events = api_service.get_all_events()
+        if events.get("data") and len(events["data"]) > 0:
+            event_id = events["data"][0].get("id")
+            if event_id:
+                result = api_service.update_event(event_id, description="Обновлено")
+                assert result is not None, "Обновление не работает"
+                print("Events update работает")
+        else:
+            pytest.skip("Нет событий для обновления")
     
     def test_events_delete(self, api_service):
         """Тест удаления события"""
-        try:
-            # Сначала получаем существующее событие
-            events = api_service.get_all_events()
-            if events.get("data") and len(events["data"]) > 0:
-                event_id = events["data"][0].get("id")
-                if event_id:
-                    result = api_service.delete_event(event_id)
-                    assert result is True, "Удаление не работает"
-                    print("Events delete работает")
-            else:
-                pytest.skip("Нет событий для удаления")
-        except Exception as e:
-            print(f"Events delete: {e}")
+        # Сначала получаем существующее событие
+        events = api_service.get_all_events()
+        if events.get("data") and len(events["data"]) > 0:
+            event_id = events["data"][0].get("id")
+            if event_id:
+                result = api_service.delete_event(event_id)
+                assert result is True, "Удаление не работает"
+                print("Events delete работает")
+        else:
+            pytest.skip("Нет событий для удаления")
 
 
 if __name__ == "__main__":

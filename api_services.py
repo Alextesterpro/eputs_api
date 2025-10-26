@@ -36,13 +36,13 @@ class SimpleAPIService:
         else:
             raise Exception(f"Ошибка поиска: {response.status_code}")
     
-    def create_incident(self, name, description):
+    def create_incident(self, name, description, type_id=1, status_id=1, threat_level_id=1, category_id=1):
         """Создать новый инцидент"""
-        response = self.client.create_incident(name, description)
+        response = self.client.create_incident(name, description, type_id, status_id, threat_level_id, category_id)
         if response.status_code in [200, 201]:
             return response.json()
         else:
-            raise Exception(f"Ошибка создания: {response.status_code}")
+            raise Exception(f"Creation error: {response.status_code} - {response.text}")
     
     def update_incident(self, incident_id, **fields):
         """Обновить инцидент"""
@@ -85,13 +85,13 @@ class SimpleAPIService:
         else:
             raise Exception(f"Ошибка получения события: {response.status_code}")
     
-    def create_event(self, name, description):
+    def create_event(self, name, description, short_name=None):
         """Создать новое событие"""
-        response = self.client.create_event(name, description)
+        response = self.client.create_event(name, description, short_name)
         if response.status_code in [200, 201]:
             return response.json()
         else:
-            raise Exception(f"Ошибка создания события: {response.status_code}")
+            raise Exception(f"Event creation error: {response.status_code} - {response.text}")
     
     def update_event(self, event_id, **fields):
         """Обновить событие"""
@@ -190,6 +190,53 @@ class SimpleAPIService:
             return True
         else:
             raise Exception(f"Ошибка удаления ключевого слова: {response.status_code}")
+    
+    # === FACTORS ===
+    def get_all_factors(self, page=1, limit=25, name=None):
+        """Получить все факторы"""
+        response = self.client.get_factors_list(page, limit, name)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения списка факторов: {response.status_code}")
+    
+    def get_factor_by_id(self, factor_id):
+        """Получить фактор по ID"""
+        response = self.client.get_factor_by_id(factor_id)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка получения фактора: {response.status_code}")
+    
+    def create_factor(self, name, is_geo=False):
+        """Создать новый фактор"""
+        response = self.client.create_factor(name, is_geo)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка создания фактора: {response.status_code}")
+    
+    def update_factor(self, factor_id, **fields):
+        """Обновить фактор"""
+        response = self.client.update_factor(factor_id, **fields)
+        if response.status_code in [200, 201]:
+            return response.json()
+        else:
+            raise Exception(f"Ошибка обновления фактора: {response.status_code} - {response.text}")
+    
+    def delete_factor(self, factor_id):
+        """Удалить фактор"""
+        response = self.client.delete_factor(factor_id)
+        if response.status_code in [200, 204]:
+            return True
+        elif response.status_code == 422 and "is_system" in response.text:
+            raise Exception("Системный фактор нельзя удалять - это нормально")
+        else:
+            raise Exception(f"Ошибка удаления фактора: {response.status_code}")
+    
+    def search_factors(self, name):
+        """Поиск факторов по имени"""
+        return self.get_all_factors(name=name)
 
 
 # Для обратной совместимости

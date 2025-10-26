@@ -53,48 +53,39 @@ class TestKeywords:
     
     def test_keywords_create(self, api_service):
         """Тест создания ключевого слова"""
-        try:
-            name = f"Тест ключевое слово {datetime.now().strftime('%H:%M:%S')}"
-            description = "Простое тестовое ключевое слово"
-            
-            result = api_service.create_keyword(name, description)
-            assert result is not None, "Создание не работает"
-            assert "data" in result, "Нет поля data"
-            print("Keywords create работает")
-        except Exception as e:
-            print(f"Keywords create: {e}")
+        name = f"Тест ключевое слово {datetime.now().strftime('%H:%M:%S')}"
+        description = "Простое тестовое ключевое слово"
+        
+        result = api_service.create_keyword(name, description)
+        assert result is not None, "Создание не работает"
+        assert "data" in result, "Нет поля data"
+        print("Keywords create работает")
     
     def test_keywords_update(self, api_service):
         """Тест обновления ключевого слова"""
-        try:
-            # Сначала получаем существующее ключевое слово
-            keywords = api_service.get_all_keywords()
-            if keywords.get("data") and len(keywords["data"]) > 0:
-                keyword_id = keywords["data"][0].get("id")
-                if keyword_id:
-                    result = api_service.update_keyword(keyword_id, description="Обновлено")
-                    assert result is not None, "Обновление не работает"
-                    print("Keywords update работает")
-            else:
-                pytest.skip("Нет ключевых слов для обновления")
-        except Exception as e:
-            print(f"Keywords update: {e}")
+        # Сначала получаем существующее ключевое слово
+        keywords = api_service.get_all_keywords()
+        if keywords.get("data") and len(keywords["data"]) > 0:
+            keyword_id = keywords["data"][0].get("id")
+            if keyword_id:
+                result = api_service.update_keyword(keyword_id, description="Обновлено")
+                assert result is not None, "Обновление не работает"
+                print("Keywords update работает")
+        else:
+            pytest.skip("Нет ключевых слов для обновления")
     
     def test_keywords_delete(self, api_service):
         """Тест удаления ключевого слова"""
-        try:
-            # Сначала получаем существующее ключевое слово
-            keywords = api_service.get_all_keywords()
-            if keywords.get("data") and len(keywords["data"]) > 0:
-                keyword_id = keywords["data"][0].get("id")
-                if keyword_id:
-                    result = api_service.delete_keyword(keyword_id)
-                    assert result is True, "Удаление не работает"
-                    print("Keywords delete работает")
-            else:
-                pytest.skip("Нет ключевых слов для удаления")
-        except Exception as e:
-            print(f"Keywords delete: {e}")
+        # Сначала получаем существующее ключевое слово
+        keywords = api_service.get_all_keywords()
+        if keywords.get("data") and len(keywords["data"]) > 0:
+            keyword_id = keywords["data"][0].get("id")
+            if keyword_id:
+                result = api_service.delete_keyword(keyword_id)
+                assert result is True, "Удаление не работает"
+                print("Keywords delete работает")
+        else:
+            pytest.skip("Нет ключевых слов для удаления")
 
 
 if __name__ == "__main__":

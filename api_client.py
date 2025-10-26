@@ -53,14 +53,46 @@ class SimpleAPIClient:
         data = {"page": page, "limit": limit}
         return requests.post(f"{self.base_url}/incident/search", json=data, headers=self.headers, verify=False)
     
-    def create_incident(self, name, description):
-        """Создать инцидент"""
-        data = {"name": name, "description": description}
+    def create_incident(self, name, description, type_id=1, status_id=1, threat_level_id=1, category_id=1):
+        """Создать инцидент с полными данными"""
+        from datetime import datetime
+        
+        data = {
+            "name": name,
+            "description": description,
+            "type_id": type_id,
+            "status_id": status_id,
+            "threat_level_id": threat_level_id,
+            "category_id": category_id,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [30.3158, 59.9311]  # St. Petersburg coordinates
+            },
+            "registered_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+            "resolve_rules": 1
+        }
         return requests.post(f"{self.base_url}/incident", json=data, headers=self.headers, verify=False)
     
     def update_incident(self, incident_id, **fields):
-        """Обновить инцидент"""
-        return requests.put(f"{self.base_url}/incident/{incident_id}", json=fields, headers=self.headers, verify=False)
+        """Обновить инцидент с полными данными"""
+        from datetime import datetime
+        
+        # Если не переданы обязательные поля, используем значения по умолчанию
+        data = {
+            "name": fields.get("name", "Обновленный инцидент"),
+            "description": fields.get("description", "Обновленное описание"),
+            "type_id": fields.get("type_id", 1),
+            "status_id": fields.get("status_id", 1),
+            "threat_level_id": fields.get("threat_level_id", 1),
+            "category_id": fields.get("category_id", 1),
+            "geometry": fields.get("geometry", {
+                "type": "Point",
+                "coordinates": [30.3158, 59.9311]
+            }),
+            "registered_at": fields.get("registered_at", datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")),
+            "resolve_rules": fields.get("resolve_rules", 1)
+        }
+        return requests.put(f"{self.base_url}/incident/{incident_id}", json=data, headers=self.headers, verify=False)
     
     def delete_incident(self, incident_id):
         """Удалить инцидент"""
@@ -75,14 +107,36 @@ class SimpleAPIClient:
         """Получить событие по ID"""
         return requests.get(f"{self.base_url}/event/{event_id}", headers=self.headers, verify=False)
     
-    def create_event(self, name, description):
-        """Создать событие"""
-        data = {"name": name, "description": description}
+    def create_event(self, name, description, short_name=None):
+        """Создать событие с полными данными"""
+        from datetime import datetime, timedelta
+        
+        if not short_name:
+            short_name = name[:20]  # Первые 20 символов как короткое имя
+            
+        now = datetime.now()
+        data = {
+            "name": name,
+            "description": description,
+            "short_name": short_name,
+            "date_start": now.strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+            "date_end": (now + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+        }
         return requests.post(f"{self.base_url}/event", json=data, headers=self.headers, verify=False)
     
     def update_event(self, event_id, **fields):
-        """Обновить событие"""
-        return requests.put(f"{self.base_url}/event/{event_id}", json=fields, headers=self.headers, verify=False)
+        """Обновить событие с полными данными"""
+        from datetime import datetime, timedelta
+        
+        now = datetime.now()
+        data = {
+            "name": fields.get("name", "Обновленное событие"),
+            "description": fields.get("description", "Обновленное описание"),
+            "short_name": fields.get("short_name", "Обновленное"),
+            "date_start": fields.get("date_start", now.strftime("%Y-%m-%dT%H:%M:%S+00:00")),
+            "date_end": fields.get("date_end", (now + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S+00:00"))
+        }
+        return requests.put(f"{self.base_url}/event/{event_id}", json=data, headers=self.headers, verify=False)
     
     def delete_event(self, event_id):
         """Удалить событие"""
@@ -131,3 +185,32 @@ class SimpleAPIClient:
     def delete_keyword(self, keyword_id):
         """Удалить ключевое слово"""
         return requests.delete(f"{self.base_url}/keyword/{keyword_id}", headers=self.headers, verify=False)
+    
+    # === FACTORS ===
+    def get_factors_list(self, page=1, limit=25, name=None):
+        """Получить список факторов"""
+        params = {"page": page, "limit": limit}
+        if name:
+            params["name"] = name
+        return requests.get(f"{self.base_url}/factor", params=params, headers=self.headers, verify=False)
+    
+    def get_factor_by_id(self, factor_id):
+        """Получить фактор по ID"""
+        return requests.get(f"{self.base_url}/factor/{factor_id}", headers=self.headers, verify=False)
+    
+    def create_factor(self, name, is_geo=False):
+        """Создать фактор"""
+        data = {"name": name, "is_geo": is_geo}
+        return requests.post(f"{self.base_url}/factor", json=data, headers=self.headers, verify=False)
+    
+    def update_factor(self, factor_id, **fields):
+        """Обновить фактор с полными данными"""
+        data = {
+            "name": fields.get("name", "Обновленный фактор"),
+            "is_geo": fields.get("is_geo", False)
+        }
+        return requests.put(f"{self.base_url}/factor/{factor_id}", json=data, headers=self.headers, verify=False)
+    
+    def delete_factor(self, factor_id):
+        """Удалить фактор"""
+        return requests.delete(f"{self.base_url}/factor/{factor_id}", headers=self.headers, verify=False)

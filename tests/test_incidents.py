@@ -68,48 +68,39 @@ class TestIncidents:
     
     def test_incidents_create(self, api_service):
         """Тест создания инцидента"""
-        try:
-            name = f"Тест {datetime.now().strftime('%H:%M:%S')}"
-            description = "Простой тестовый инцидент"
-            
-            result = api_service.create_incident(name, description)
-            assert result is not None, "Создание не работает"
-            assert "data" in result, "Нет поля data"
-            print("Incidents create работает")
-        except Exception as e:
-            print(f"Incidents create: {e}")
+        name = f"Тест {datetime.now().strftime('%H:%M:%S')}"
+        description = "Простой тестовый инцидент"
+        
+        result = api_service.create_incident(name, description)
+        assert result is not None, "Создание не работает"
+        assert "data" in result, "Нет поля data"
+        print("Incidents create работает")
     
     def test_incidents_update(self, api_service):
         """Тест обновления инцидента"""
-        try:
-            # Сначала получаем существующий инцидент
-            incidents = api_service.get_all_incidents(page=1, limit=1)
-            if incidents.get("data") and len(incidents["data"]) > 0:
-                incident_id = incidents["data"][0].get("id")
-                if incident_id:
-                    result = api_service.update_incident(incident_id, description="Обновлено")
-                    assert result is not None, "Обновление не работает"
-                    print("Incidents update работает")
-            else:
-                pytest.skip("Нет инцидентов для обновления")
-        except Exception as e:
-            print(f"Incidents update: {e}")
+        # Сначала получаем существующий инцидент
+        incidents = api_service.get_all_incidents(page=1, limit=1)
+        if incidents.get("data") and len(incidents["data"]) > 0:
+            incident_id = incidents["data"][0].get("id")
+            if incident_id:
+                result = api_service.update_incident(incident_id, description="Обновлено")
+                assert result is not None, "Обновление не работает"
+                print("Incidents update работает")
+        else:
+            pytest.skip("Нет инцидентов для обновления")
     
     def test_incidents_delete(self, api_service):
         """Тест удаления инцидента"""
-        try:
-            # Сначала получаем существующий инцидент
-            incidents = api_service.get_all_incidents(page=1, limit=1)
-            if incidents.get("data") and len(incidents["data"]) > 0:
-                incident_id = incidents["data"][0].get("id")
-                if incident_id:
-                    result = api_service.delete_incident(incident_id)
-                    assert result is True, "Удаление не работает"
-                    print("Incidents delete работает")
-            else:
-                pytest.skip("Нет инцидентов для удаления")
-        except Exception as e:
-            print(f"Incidents delete: {e}")
+        # Сначала получаем существующий инцидент
+        incidents = api_service.get_all_incidents(page=1, limit=1)
+        if incidents.get("data") and len(incidents["data"]) > 0:
+            incident_id = incidents["data"][0].get("id")
+            if incident_id:
+                result = api_service.delete_incident(incident_id)
+                assert result is True, "Удаление не работает"
+                print("Incidents delete работает")
+        else:
+            pytest.skip("Нет инцидентов для удаления")
 
 
 if __name__ == "__main__":

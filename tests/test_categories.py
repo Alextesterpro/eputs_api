@@ -53,48 +53,39 @@ class TestCategories:
     
     def test_categories_create(self, api_service):
         """Тест создания категории"""
-        try:
-            name = f"Тест категория {datetime.now().strftime('%H:%M:%S')}"
-            description = "Простая тестовая категория"
-            
-            result = api_service.create_category(name, description)
-            assert result is not None, "Создание не работает"
-            assert "data" in result, "Нет поля data"
-            print("Categories create работает")
-        except Exception as e:
-            print(f"Categories create: {e}")
+        name = f"Тест категория {datetime.now().strftime('%H:%M:%S')}"
+        description = "Простая тестовая категория"
+        
+        result = api_service.create_category(name, description)
+        assert result is not None, "Создание не работает"
+        assert "data" in result, "Нет поля data"
+        print("Categories create работает")
     
     def test_categories_update(self, api_service):
         """Тест обновления категории"""
-        try:
-            # Сначала получаем существующую категорию
-            categories = api_service.get_all_categories()
-            if categories.get("data") and len(categories["data"]) > 0:
-                category_id = categories["data"][0].get("id")
-                if category_id:
-                    result = api_service.update_category(category_id, description="Обновлено")
-                    assert result is not None, "Обновление не работает"
-                    print("Categories update работает")
-            else:
-                pytest.skip("Нет категорий для обновления")
-        except Exception as e:
-            print(f"Categories update: {e}")
+        # Сначала получаем существующую категорию
+        categories = api_service.get_all_categories()
+        if categories.get("data") and len(categories["data"]) > 0:
+            category_id = categories["data"][0].get("id")
+            if category_id:
+                result = api_service.update_category(category_id, description="Обновлено")
+                assert result is not None, "Обновление не работает"
+                print("Categories update работает")
+        else:
+            pytest.skip("Нет категорий для обновления")
     
     def test_categories_delete(self, api_service):
         """Тест удаления категории"""
-        try:
-            # Сначала получаем существующую категорию
-            categories = api_service.get_all_categories()
-            if categories.get("data") and len(categories["data"]) > 0:
-                category_id = categories["data"][0].get("id")
-                if category_id:
-                    result = api_service.delete_category(category_id)
-                    assert result is True, "Удаление не работает"
-                    print("Categories delete работает")
-            else:
-                pytest.skip("Нет категорий для удаления")
-        except Exception as e:
-            print(f"Categories delete: {e}")
+        # Сначала получаем существующую категорию
+        categories = api_service.get_all_categories()
+        if categories.get("data") and len(categories["data"]) > 0:
+            category_id = categories["data"][0].get("id")
+            if category_id:
+                result = api_service.delete_category(category_id)
+                assert result is True, "Удаление не работает"
+                print("Categories delete работает")
+        else:
+            pytest.skip("Нет категорий для удаления")
 
 
 if __name__ == "__main__":
