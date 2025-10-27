@@ -81,6 +81,42 @@ class TestTokenCheck:
         assert result['valid'] is True, f"Токен невалиден: {result['message']}"
         assert result['status_code'] in [200, 201], f"Неожиданный статус код: {result['status_code']}"
     
+    def test_parking_token_check(self, parking_client):
+        """Проверка токена через API Парковочное пространство"""
+        result = parking_client.check_token()
+        
+        print(f"\nРезультат проверки токена (Parking):")
+        print(f"  Валиден: {result['valid']}")
+        print(f"  Статус код: {result['status_code']}")
+        print(f"  Сообщение: {result['message']}")
+        
+        assert result['valid'] is True, f"Токен невалиден: {result['message']}"
+        assert result['status_code'] in [200, 201], f"Неожиданный статус код: {result['status_code']}"
+    
+    def test_digital_twin_token_check(self, digital_twin_client):
+        """Проверка токена через API Цифровой двойник"""
+        result = digital_twin_client.check_token()
+        
+        print(f"\nРезультат проверки токена (Digital Twin):")
+        print(f"  Валиден: {result['valid']}")
+        print(f"  Статус код: {result['status_code']}")
+        print(f"  Сообщение: {result['message']}")
+        
+        assert result['valid'] is True, f"Токен невалиден: {result['message']}"
+        assert result['status_code'] in [200, 201], f"Неожиданный статус код: {result['status_code']}"
+    
+    def test_external_transport_token_check(self, external_transport_client):
+        """Проверка токена через API Внешний транспорт"""
+        result = external_transport_client.check_token()
+        
+        print(f"\nРезультат проверки токена (External Transport):")
+        print(f"  Валиден: {result['valid']}")
+        print(f"  Статус код: {result['status_code']}")
+        print(f"  Сообщение: {result['message']}")
+        
+        assert result['valid'] is True, f"Токен невалиден: {result['message']}"
+        assert result['status_code'] in [200, 201], f"Неожиданный статус код: {result['status_code']}"
+    
     def test_token_unauthorized_simulation(self, api_service):
         """Симуляция проверки с невалидным токеном (опционально)"""
         original_token = api_service.client.token
