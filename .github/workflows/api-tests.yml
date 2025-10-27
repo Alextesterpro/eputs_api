@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main, develop ]
   schedule:
-    - cron: '0 9 * * 1-5'  # Каждый будний день в 9:00 UTC (12:00 МСК)
+    - cron: '0 4 * * 1-5'  # Каждый будний день в 4:00 UTC (9:00 МСК)
   workflow_dispatch:  # Возможность запустить вручную
 
 jobs:
@@ -43,6 +43,17 @@ jobs:
         
         username = "${{ secrets.API_USERNAME }}"
         password = "${{ secrets.API_PASSWORD }}"
+        
+        # Debug: проверяем что секреты получены
+        if not username or username == "":
+            print("❌ ОШИБКА: API_USERNAME не найден в секретах!")
+            sys.exit(1)
+        if not password or password == "":
+            print("❌ ОШИБКА: API_PASSWORD не найден в секретах!")
+            sys.exit(1)
+        
+        print(f"✅ Секреты получены")
+        print(f"   Username: {username[:10]}...")  # Показываем только первые 10 символов
         
         url = "http://91.227.17.139/services/passport/api/login"
         headers = {
