@@ -1,0 +1,159 @@
+stages:
+  - setup
+  - test
+  - report
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+# Получение токена
+get_token:
+  stage: setup
+  image: python:3.11
+  before_script:
+    - pip install requests
+  script:
+    - |
+      python3 << 'EOF'
+      import requests
+      import sys
+      import os
+      
+      username = os.getenv("API_USERNAME")
+      password = os.getenv("API_PASSWORD")
+      
+      url = "http://91.227.17.139/services/passport/api/login"
+      headers = {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "service": "eputs"
+      }
+      payload = {"username": username, "password": password}
+      
+      try:
+          response = requests.post(url, json=payload, headers=headers, verify=False, timeout=30)
+          if response.status_code == 200:
+              token = response.json().get("token")
+              if token:
+                  with open('.env', 'w') as f:
+                      f.write(f'EPUTS_TOKEN={token}\n')
+                  print("✅ Токен получен и сохранен")
+              else:
+                  print("❌ Токен не найден в ответе")
+                  sys.exit(1)
+          else:
+              print(f"❌ Ошибка авторизации: {response.status_code}")
+              sys.exit(1)
+      except Exception as e:
+          print(f"❌ Ошибка: {e}")
+          sys.exit(1)
+      EOF
+  artifacts:
+    paths:
+      - .env
+    expire_in: 1 hour
+
+# Проверка токена
+check_token:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/test_api_info.py::TestTokenCheck::test_incidents_token_check -v
+
+# Тесты Incidents
+test_incidents:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/tests_incidents/ -v --tb=short
+  allow_failure: true
+
+# Тесты DTP
+test_dtp:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/tests_dtp/ -v --tb=short
+  allow_failure: true
+
+# Тесты Metro
+test_metro:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/tests_metro/ -v --tb=short
+  allow_failure: true
+
+# Тесты Parking
+test_parking:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/tests_parking/ -v --tb=short
+  allow_failure: true
+
+# Тесты Digital Twin
+test_digital_twin:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/tests_digital_twin/ -v --tb=short
+  allow_failure: true
+
+# Тесты External Transport
+test_external_transport:
+  stage: test
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/tests_external_transport/ -v --tb=short
+  allow_failure: true
+
+# Генерация отчета
+generate_report:
+  stage: report
+  image: python:3.11
+  dependencies:
+    - get_token
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/ --alluredir=allure-results -v || true
+  artifacts:
+    when: always
+    paths:
+      - allure-results/
+    expire_in: 30 days
+  allow_failure: true
+

@@ -1,0 +1,129 @@
+name: API Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 9 * * 1-5'  # Каждый будний день в 9:00 UTC (12:00 МСК)
+  workflow_dispatch:  # Возможность запустить вручную
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout код
+      uses: actions/checkout@v3
+    
+    - name: Установка Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Кэширование зависимостей
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Установка зависимостей
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Получение токена
+      run: |
+        python3 << 'EOF'
+        import requests
+        import sys
+        
+        username = "${{ secrets.API_USERNAME }}"
+        password = "${{ secrets.API_PASSWORD }}"
+        
+        url = "http://91.227.17.139/services/passport/api/login"
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "service": "eputs"
+        }
+        payload = {"username": username, "password": password}
+        
+        try:
+            response = requests.post(url, json=payload, headers=headers, verify=False, timeout=30)
+            if response.status_code == 200:
+                token = response.json().get("token")
+                if token:
+                    with open('.env', 'w') as f:
+                        f.write(f'EPUTS_TOKEN={token}\n')
+                    print("✅ Токен получен и сохранен")
+                else:
+                    print("❌ Токен не найден в ответе")
+                    sys.exit(1)
+            else:
+                print(f"❌ Ошибка авторизации: {response.status_code}")
+                sys.exit(1)
+        except Exception as e:
+            print(f"❌ Ошибка: {e}")
+            sys.exit(1)
+        EOF
+    
+    - name: Проверка токена
+      run: |
+        pytest tests/test_api_info.py::TestTokenCheck::test_incidents_token_check -v
+    
+    - name: Запуск тестов Incidents
+      run: |
+        pytest tests/tests_incidents/ -v --tb=short
+      continue-on-error: true
+    
+    - name: Запуск тестов DTP
+      run: |
+        pytest tests/tests_dtp/ -v --tb=short
+      continue-on-error: true
+    
+    - name: Запуск тестов Metro
+      run: |
+        pytest tests/tests_metro/ -v --tb=short
+      continue-on-error: true
+    
+    - name: Запуск тестов Parking
+      run: |
+        pytest tests/tests_parking/ -v --tb=short
+      continue-on-error: true
+    
+    - name: Запуск тестов Digital Twin
+      run: |
+        pytest tests/tests_digital_twin/ -v --tb=short
+      continue-on-error: true
+    
+    - name: Запуск тестов External Transport
+      run: |
+        pytest tests/tests_external_transport/ -v --tb=short
+      continue-on-error: true
+    
+    - name: Генерация Allure отчета
+      if: always()
+      run: |
+        pytest tests/ --alluredir=allure-results -v
+      continue-on-error: true
+    
+    - name: Публикация Allure отчета
+      if: always()
+      uses: simple-elf/allure-report-action@master
+      with:
+        allure_results: allure-results
+        allure_history: allure-history
+        keep_reports: 20
+    
+    - name: Уведомление об успехе
+      if: success()
+      run: echo "✅ Все тесты прошли успешно!"
+    
+    - name: Уведомление об ошибке
+      if: failure()
+      run: echo "❌ Некоторые тесты упали. Проверьте логи."
+

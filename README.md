@@ -191,6 +191,43 @@ print(f"Сообщение: {result['message']}")
 | External Transport | 5 тестов | ✅ All passed |
 | Token Checks | 9 тестов | ✅ All passed |
 
+## CI/CD
+
+### GitHub Actions
+
+Автоматический запуск тестов при каждом пуше и по расписанию.
+
+**Настройка:**
+1. Добавь секреты в GitHub:
+   - `API_USERNAME` - твой логин
+   - `API_PASSWORD` - твой пароль
+
+2. Workflow запустится автоматически при пуше
+
+3. Просмотр результатов:
+   ```
+   https://github.com/Alextesterpro/eputs_api/actions
+   ```
+
+**Подробная инструкция:** См. `CICD_SETUP.md`
+
+### GitLab CI
+
+Аналогично для GitLab:
+1. Добавь переменные окружения:
+   - `API_USERNAME`
+   - `API_PASSWORD`
+
+2. Pipeline запустится автоматически
+
+### Запуск вручную
+
+**GitHub:**
+- Actions → API Tests → Run workflow
+
+**GitLab:**
+- CI/CD → Pipelines → Run pipeline
+
 ## Troubleshooting
 
 ### Токен протух
@@ -205,6 +242,11 @@ pytest tests/test_api_info.py::TestTokenCheck -v
 
 ### Проблемы с сертификатами
 Все клиенты используют `verify=False` для игнорирования SSL предупреждений.
+
+### CI/CD не работает
+- Проверь секреты в настройках репозитория
+- Проверь логи в Actions/Pipelines
+- См. `CICD_SETUP.md` для детальной диагностики
 
 ---
 
