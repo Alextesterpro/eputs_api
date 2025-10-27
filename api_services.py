@@ -3,7 +3,7 @@
 Простой сервисный слой
 """
 
-from api_client import SimpleAPIClient
+from api_client_incidents import SimpleAPIClient
 
 
 class SimpleAPIService:

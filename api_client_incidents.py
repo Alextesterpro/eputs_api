@@ -39,6 +39,54 @@ class SimpleAPIClient:
             "service": "eputs"
         }
     
+    def check_token(self):
+        """
+        Проверить валидность токена
+        Делает GET запрос к /incident и проверяет статус ответа
+        Returns:
+            dict: {"valid": bool, "status_code": int, "message": str}
+        """
+        try:
+            response = requests.get(
+                f"{self.base_url}/incident",
+                params={"page": 1, "limit": 1},
+                headers=self.headers,
+                verify=False,
+                timeout=10
+            )
+            
+            if response.status_code == 401:
+                return {
+                    "valid": False,
+                    "status_code": 401,
+                    "message": "Токен недействителен или протух (401 Unauthorized)"
+                }
+            elif response.status_code == 403:
+                return {
+                    "valid": False,
+                    "status_code": 403,
+                    "message": "Нет доступа (403 Forbidden)"
+                }
+            elif response.status_code in [200, 201]:
+                return {
+                    "valid": True,
+                    "status_code": response.status_code,
+                    "message": "Токен валиден"
+                }
+            else:
+                return {
+                    "valid": False,
+                    "status_code": response.status_code,
+                    "message": f"Неожиданный статус код: {response.status_code}"
+                }
+                
+        except requests.exceptions.RequestException as e:
+            return {
+                "valid": False,
+                "status_code": 0,
+                "message": f"Ошибка соединения: {str(e)}"
+            }
+    
     def get_incidents_list(self, page=1, limit=10):
         """Получить список инцидентов"""
         data = {"page": page, "limit": limit, "is_simple": True}
@@ -214,3 +262,4 @@ class SimpleAPIClient:
     def delete_factor(self, factor_id):
         """Удалить фактор"""
         return requests.delete(f"{self.base_url}/factor/{factor_id}", headers=self.headers, verify=False)
+
