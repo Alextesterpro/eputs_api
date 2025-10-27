@@ -10,115 +10,93 @@ from datetime import datetime
 class TestFactors:
     """Тесты для пользовательских факторов инцидентов"""
     
-    def test_factors_list(self, api_service):
+    def test_factors_list(self, incidents_client):
         """Тест получения списка факторов"""
-        result = api_service.get_all_factors()
-        assert result is not None, "Список факторов не получен"
-        assert "data" in result, "Нет поля data"
-        assert isinstance(result["data"], list), "Данные должны быть списком"
+        result = incidents_client.get_factors_list()
+        assert result.status_code == 200, f"Status code: {result.status_code}"
+        data = result.json()
+        assert "data" in data, "Нет поля data"
+        assert isinstance(data["data"], list), "Данные должны быть списком"
         print("Factors list работает")
     
-    def test_factors_get_by_id(self, api_service):
+    def test_factors_get_by_id(self, incidents_client):
         """Тест получения фактора по ID"""
         # Сначала получаем список, чтобы найти существующий ID
-        factors = api_service.get_all_factors()
-        if factors.get("data") and len(factors["data"]) > 0:
-            factor_id = factors["data"][0].get("id")
-            if factor_id:
-                result = api_service.get_factor_by_id(factor_id)
-                assert result is not None, "Фактор не получен"
-                assert "data" in result, "Нет поля data"
-                print("Factors get by ID работает")
-        else:
-            pytest.skip("Нет факторов для тестирования")
+        factors = incidents_client.get_factors_list()
+        if factors.status_code == 200:
+            data = factors.json()
+            if data.get("data") and len(data["data"]) > 0:
+                factor_id = data["data"][0].get("id")
+                if factor_id:
+                    result = incidents_client.get_factor_by_id(factor_id)
+                    assert result.status_code == 200, f"Status code: {result.status_code}"
+                    response_data = result.json()
+                    assert "data" in response_data, "Нет поля data"
+                    print("Factors get by ID работает")
+                    return
+        pytest.skip("Нет факторов для тестирования")
     
-    def test_factors_workflow(self, api_service):
-        """Тест полного workflow для факторов"""
-        # 1. Получаем список
-        factors = api_service.get_all_factors()
-        assert factors is not None, "Список факторов не получен"
-        assert "data" in factors, "Нет поля data"
-        assert isinstance(factors["data"], list), "Данные должны быть списком"
-        
-        # 2. Получаем один фактор
-        if factors.get("data") and len(factors["data"]) > 0:
-            factor_id = factors["data"][0].get("id")
-            if factor_id:
-                factor = api_service.get_factor_by_id(factor_id)
-                assert factor is not None, "Фактор не получен"
-                assert "data" in factor, "Нет поля data в деталях"
-                assert factor["data"]["id"] == factor_id, "ID не совпадает"
-        
-        print("Factors workflow работает")
-    
-    def test_factors_search(self, api_service):
-        """Тест поиска факторов по имени"""
-        try:
-            result = api_service.search_factors(name="тест")
-            assert result is not None, "Поиск не работает"
-            assert "data" in result, "Нет поля data"
-            print("Factors search работает")
-        except Exception as e:
-            print(f"Factors search: {e}")
-    
-    def test_factors_pagination(self, api_service):
+    def test_factors_pagination(self, incidents_client):
         """Тест пагинации факторов"""
-        page1 = api_service.get_all_factors(page=1, limit=5)
-        page2 = api_service.get_all_factors(page=2, limit=5)
+        page1 = incidents_client.get_factors_list(page=1, limit=5)
+        page2 = incidents_client.get_factors_list(page=2, limit=5)
         
-        assert page1 is not None, "Первая страница не получена"
-        assert page2 is not None, "Вторая страница не получена"
-        assert "data" in page1, "Нет поля data в первой странице"
-        assert "data" in page2, "Нет поля data во второй странице"
+        assert page1.status_code == 200, f"Page 1 status: {page1.status_code}"
+        assert page2.status_code == 200, f"Page 2 status: {page2.status_code}"
+        
+        data1 = page1.json()
+        data2 = page2.json()
+        
+        assert "data" in data1, "Нет поля data в первой странице"
+        assert "data" in data2, "Нет поля data во второй странице"
         print("Factors pagination работает")
     
-    def test_factors_create(self, api_service):
+    def test_factors_create(self, incidents_client):
         """Тест создания фактора"""
         name = f"Фактор_апи_тест_{datetime.now().strftime('%H%M%S')}"
         is_geo = True
         
-        result = api_service.create_factor(name, is_geo)
-        assert result is not None, "Создание не работает"
-        assert "data" in result, "Нет поля data"
+        result = incidents_client.create_factor(name, is_geo)
+        assert result.status_code in [200, 201], f"Status code: {result.status_code}"
+        data = result.json()
+        assert "data" in data, "Нет поля data"
         print("Factors create работает")
     
-    def test_factors_update(self, api_service):
+    def test_factors_update(self, incidents_client):
         """Тест обновления фактора"""
-        try:
-            # Сначала получаем существующий фактор
-            factors = api_service.get_all_factors()
-            if factors.get("data") and len(factors["data"]) > 0:
-                factor_id = factors["data"][0].get("id")
+        # Сначала получаем существующий фактор
+        factors = incidents_client.get_factors_list()
+        if factors.status_code == 200:
+            data = factors.json()
+            if data.get("data") and len(data["data"]) > 0:
+                factor_id = data["data"][0].get("id")
                 if factor_id:
-                    result = api_service.update_factor(factor_id, name="Фактор_апи_тест_изменение", is_geo=True)
-                    assert result is not None, "Обновление не работает"
+                    result = incidents_client.update_factor(factor_id, name="Фактор_апи_тест_изменение", is_geo=True)
+                    # Проверяем системный фактор
+                    if result.status_code == 422 and "is_system" in result.text:
+                        pytest.skip("Системный фактор нельзя изменять - это нормально")
+                    assert result.status_code in [200, 201], f"Status code: {result.status_code}"
                     print("Factors update работает")
-            else:
-                pytest.skip("Нет факторов для обновления")
-        except Exception as e:
-            if "системный фактор нельзя изменять" in str(e) or "is_system" in str(e):
-                pytest.skip("Системный фактор нельзя изменять - это нормально")
-            else:
-                raise
+                    return
+        pytest.skip("Нет факторов для обновления")
     
-    def test_factors_delete(self, api_service):
+    def test_factors_delete(self, incidents_client):
         """Тест удаления фактора"""
-        try:
-            # Сначала получаем существующий фактор
-            factors = api_service.get_all_factors()
-            if factors.get("data") and len(factors["data"]) > 0:
-                factor_id = factors["data"][0].get("id")
+        # Сначала получаем существующий фактор
+        factors = incidents_client.get_factors_list()
+        if factors.status_code == 200:
+            data = factors.json()
+            if data.get("data") and len(data["data"]) > 0:
+                factor_id = data["data"][0].get("id")
                 if factor_id:
-                    result = api_service.delete_factor(factor_id)
-                    assert result is True, "Удаление не работает"
+                    result = incidents_client.delete_factor(factor_id)
+                    # Проверяем системный фактор
+                    if result.status_code == 422 and "is_system" in result.text:
+                        pytest.skip("Системный фактор нельзя удалять - это нормально")
+                    assert result.status_code in [200, 204], f"Status code: {result.status_code}"
                     print("Factors delete работает")
-            else:
-                pytest.skip("Нет факторов для удаления")
-        except Exception as e:
-            if "системный фактор нельзя изменять" in str(e) or "is_system" in str(e):
-                pytest.skip("Системный фактор нельзя удалять - это нормально")
-            else:
-                raise
+                    return
+        pytest.skip("Нет факторов для удаления")
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ import os
 # Добавляем корневую папку в путь
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from api_services import SimpleAPIService
+from api_client_incidents import IncidentsAPIClient
 from api_client_dtp import DTPAPIClient
 from api_client_metro import MetroAPIClient
 from api_client_parking import ParkingAPIClient
@@ -19,9 +19,9 @@ from api_client_external_transport import ExternalTransportAPIClient
 
 
 @pytest.fixture(scope="module")
-def api_service():
-    """Фикстура для предоставления API сервиса инцидентов"""
-    return SimpleAPIService()
+def incidents_client():
+    """Фикстура для предоставления API клиента инцидентов"""
+    return IncidentsAPIClient()
 
 
 @pytest.fixture(scope="module")

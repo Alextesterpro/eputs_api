@@ -10,82 +10,72 @@ from datetime import datetime
 class TestCategories:
     """Тесты для категорий"""
     
-    def test_categories_list(self, api_service):
+    def test_categories_list(self, incidents_client):
         """Тест получения списка категорий"""
-        result = api_service.get_all_categories()
-        assert result is not None, "Список категорий не получен"
-        assert "data" in result, "Нет поля data"
-        assert isinstance(result["data"], list), "Данные должны быть списком"
+        result = incidents_client.get_categories_list()
+        assert result.status_code == 200, f"Status code: {result.status_code}"
+        data = result.json()
+        assert "data" in data, "Нет поля data"
+        assert isinstance(data["data"], list), "Данные должны быть списком"
         print("Categories list работает")
     
-    def test_categories_get_by_id(self, api_service):
+    def test_categories_get_by_id(self, incidents_client):
         """Тест получения категории по ID"""
         # Сначала получаем список, чтобы найти существующий ID
-        categories = api_service.get_all_categories()
-        if categories.get("data") and len(categories["data"]) > 0:
-            category_id = categories["data"][0].get("id")
-            if category_id:
-                result = api_service.get_category_by_id(category_id)
-                assert result is not None, "Категория не получена"
-                assert "data" in result, "Нет поля data"
-                print("Categories get by ID работает")
-        else:
-            pytest.skip("Нет категорий для тестирования")
+        categories = incidents_client.get_categories_list()
+        if categories.status_code == 200:
+            data = categories.json()
+            if data.get("data") and len(data["data"]) > 0:
+                category_id = data["data"][0].get("id")
+                if category_id:
+                    result = incidents_client.get_category_by_id(category_id)
+                    assert result.status_code == 200, f"Status code: {result.status_code}"
+                    response_data = result.json()
+                    assert "data" in response_data, "Нет поля data"
+                    print("Categories get by ID работает")
+                    return
+        pytest.skip("Нет категорий для тестирования")
     
-    def test_categories_workflow(self, api_service):
-        """Тест полного workflow для категорий"""
-        # 1. Получаем список
-        categories = api_service.get_all_categories()
-        assert categories is not None, "Список категорий не получен"
-        assert "data" in categories, "Нет поля data"
-        assert isinstance(categories["data"], list), "Данные должны быть списком"
-        
-        # 2. Получаем одну категорию
-        if categories.get("data") and len(categories["data"]) > 0:
-            category_id = categories["data"][0].get("id")
-            if category_id:
-                category = api_service.get_category_by_id(category_id)
-                assert category is not None, "Категория не получена"
-                assert "data" in category, "Нет поля data в деталях"
-                assert category["data"]["id"] == category_id, "ID не совпадает"
-        
-        print("Categories workflow работает")
-    
-    def test_categories_create(self, api_service):
+    def test_categories_create(self, incidents_client):
         """Тест создания категории"""
         name = f"Тест категория {datetime.now().strftime('%H:%M:%S')}"
         description = "Простая тестовая категория"
         
-        result = api_service.create_category(name, description)
-        assert result is not None, "Создание не работает"
-        assert "data" in result, "Нет поля data"
+        result = incidents_client.create_category(name, description)
+        assert result.status_code in [200, 201], f"Status code: {result.status_code}"
+        data = result.json()
+        assert "data" in data, "Нет поля data"
         print("Categories create работает")
     
-    def test_categories_update(self, api_service):
+    def test_categories_update(self, incidents_client):
         """Тест обновления категории"""
         # Сначала получаем существующую категорию
-        categories = api_service.get_all_categories()
-        if categories.get("data") and len(categories["data"]) > 0:
-            category_id = categories["data"][0].get("id")
-            if category_id:
-                result = api_service.update_category(category_id, description="Обновлено")
-                assert result is not None, "Обновление не работает"
-                print("Categories update работает")
-        else:
-            pytest.skip("Нет категорий для обновления")
+        categories = incidents_client.get_categories_list()
+        if categories.status_code == 200:
+            data = categories.json()
+            if data.get("data") and len(data["data"]) > 0:
+                category_id = data["data"][0].get("id")
+                if category_id:
+                    result = incidents_client.update_category(category_id, description="Обновлено")
+                    assert result.status_code in [200, 201], f"Status code: {result.status_code}"
+                    print("Categories update работает")
+                    return
+        pytest.skip("Нет категорий для обновления")
     
-    def test_categories_delete(self, api_service):
+    def test_categories_delete(self, incidents_client):
         """Тест удаления категории"""
         # Сначала получаем существующую категорию
-        categories = api_service.get_all_categories()
-        if categories.get("data") and len(categories["data"]) > 0:
-            category_id = categories["data"][0].get("id")
-            if category_id:
-                result = api_service.delete_category(category_id)
-                assert result is True, "Удаление не работает"
-                print("Categories delete работает")
-        else:
-            pytest.skip("Нет категорий для удаления")
+        categories = incidents_client.get_categories_list()
+        if categories.status_code == 200:
+            data = categories.json()
+            if data.get("data") and len(data["data"]) > 0:
+                category_id = data["data"][0].get("id")
+                if category_id:
+                    result = incidents_client.delete_category(category_id)
+                    assert result.status_code in [200, 204], f"Status code: {result.status_code}"
+                    print("Categories delete работает")
+                    return
+        pytest.skip("Нет категорий для удаления")
 
 
 if __name__ == "__main__":

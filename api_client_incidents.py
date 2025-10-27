@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Простой API клиент - без сложностей
+API клиент для раздела Инциденты
 """
 
 import requests
 import os
 
 
-class SimpleAPIClient:
-    """Простой API клиент"""
+class IncidentsAPIClient:
+    """API клиент для работы с разделом Инциденты"""
     
     def __init__(self):
         self.base_url = "http://91.227.17.139/services/react/api"
