@@ -14,12 +14,14 @@
 
 ```
 DorisAutomatiomAPI/
-├── api_client_incidents.py         # API клиент для Инцидентов
-├── api_client_dtp.py                # API клиент для ДТП
-├── api_client_metro.py              # API клиент для Метрополитен
-├── api_client_parking.py            # API клиент для Парковок
-├── api_client_digital_twin.py       # API клиент для Цифрового двойника
-├── api_client_external_transport.py # API клиент для Внешнего транспорта
+├── api_clients/                     # API клиенты для всех сервисов
+│   ├── __init__.py                  # Экспорт всех клиентов
+│   ├── incidents.py                 # API клиент для Инцидентов
+│   ├── dtp.py                       # API клиент для ДТП
+│   ├── metro.py                     # API клиент для Метрополитен
+│   ├── parking.py                   # API клиент для Парковок
+│   ├── digital_twin.py              # API клиент для Цифрового двойника
+│   └── external_transport.py        # API клиент для Внешнего транспорта
 ├── update_token.py                  # Скрипт авторизации и обновления токена
 ├── run_all_tests.py                 # Запуск всех тестов
 ├── tests/
@@ -128,13 +130,25 @@ def test_incidents_list(self, incidents_client):
 
 ### Использование в скриптах
 ```python
-from api_client_incidents import IncidentsAPIClient
+from api_clients import IncidentsAPIClient
 
 client = IncidentsAPIClient()
 response = client.get_incidents_list(page=1, limit=5)
 if response.status_code == 200:
     incidents = response.json()
     print(incidents)
+```
+
+### Импорт всех клиентов
+```python
+from api_clients import (
+    IncidentsAPIClient,
+    DTPAPIClient,
+    MetroAPIClient,
+    ParkingAPIClient,
+    DigitalTwinAPIClient,
+    ExternalTransportAPIClient
+)
 ```
 
 ## Проверка токена

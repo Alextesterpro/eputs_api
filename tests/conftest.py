@@ -10,12 +10,14 @@ import os
 # Добавляем корневую папку в путь
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from api_client_incidents import IncidentsAPIClient
-from api_client_dtp import DTPAPIClient
-from api_client_metro import MetroAPIClient
-from api_client_parking import ParkingAPIClient
-from api_client_digital_twin import DigitalTwinAPIClient
-from api_client_external_transport import ExternalTransportAPIClient
+from api_clients import (
+    IncidentsAPIClient,
+    DTPAPIClient,
+    MetroAPIClient,
+    ParkingAPIClient,
+    DigitalTwinAPIClient,
+    ExternalTransportAPIClient
+)
 
 
 @pytest.fixture(scope="module")
