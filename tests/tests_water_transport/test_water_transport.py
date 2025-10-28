@@ -15,7 +15,10 @@ class TestWaterTransportVehicles:
         assert response.status_code == 200, f"Status code: {response.status_code}"
         data = response.json()
         assert data.get("success") is True, "Нет success=true"
-        print(f"Получено транспортных средств: {len(data.get('data', {}).get('items', []))}")
+        
+        # data может быть списком или словарем с ключом data
+        items = data.get('data', data) if isinstance(data.get('data'), list) else data.get('data', {}).get('items', [])
+        print(f"Получено транспортных средств: {len(items) if isinstance(items, list) else 0}")
 
     def test_vehicle_list_pagination(self, water_transport_client):
         """Тест пагинации списка транспортных средств"""
@@ -31,8 +34,12 @@ class TestWaterTransportVehicles:
         data_page2 = response_page2.json()
         assert data_page2.get("success") is True
         
-        print(f"Страница 1: {len(data_page1.get('data', {}).get('items', []))} элементов")
-        print(f"Страница 2: {len(data_page2.get('data', {}).get('items', []))} элементов")
+        # data может быть списком или словарем с ключом data
+        items1 = data_page1.get('data', data_page1) if isinstance(data_page1.get('data'), list) else data_page1.get('data', {}).get('items', [])
+        items2 = data_page2.get('data', data_page2) if isinstance(data_page2.get('data'), list) else data_page2.get('data', {}).get('items', [])
+        
+        print(f"Страница 1: {len(items1) if isinstance(items1, list) else 0} элементов")
+        print(f"Страница 2: {len(items2) if isinstance(items2, list) else 0} элементов")
 
     def test_vehicle_create_update_delete(self, water_transport_client):
         """Тест полного цикла CRUD для транспортного средства"""
