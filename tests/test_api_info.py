@@ -102,6 +102,15 @@ class TestTokenCheck:
         assert result['valid'] is True, f"Токен невалиден: {result['message']}"
         assert result['status_code'] in [200, 201], f"Неожиданный статус код: {result['status_code']}"
     
+    def test_water_transport_token_check(self, water_transport_client):
+        """Проверка токена через API Водного транспорта"""
+        result = water_transport_client.check_token()
+        
+        print(f"\nРезультат проверки токена (Water Transport):")
+        print(f"  Валиден: {result}")
+        
+        assert result is True, "Токен невалиден для Water Transport API"
+    
     def test_token_unauthorized_simulation(self, incidents_client):
         """Симуляция проверки с невалидным токеном (опционально)"""
         original_token = incidents_client.token

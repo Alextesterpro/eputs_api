@@ -5,7 +5,7 @@
 ## Особенности
 
 - **Единообразие** - все API используют прямые клиенты без промежуточных слоев
-- **Полное покрытие** - 6 основных сервисов (Incidents, DTP, Metro, Parking, Digital Twin, External Transport)
+- **Полное покрытие** - 7 основных сервисов (Incidents, DTP, Metro, Parking, Digital Twin, External Transport, Water Transport)
 - **Реальные endpoints** - тесты работают с реальным API
 - **Авторизация** - автоматическое получение и валидация токенов
 - **Диагностика** - проверка валидности токенов для всех сервисов
@@ -21,7 +21,8 @@ DorisAutomatiomAPI/
 │   ├── metro.py                     # API клиент для Метрополитен
 │   ├── parking.py                   # API клиент для Парковок
 │   ├── digital_twin.py              # API клиент для Цифрового двойника
-│   └── external_transport.py        # API клиент для Внешнего транспорта
+│   ├── external_transport.py        # API клиент для Внешнего транспорта
+│   └── water_transport.py           # API клиент для Водного транспорта
 ├── update_token.py                  # Скрипт авторизации и обновления токена
 ├── run_all_tests.py                 # Запуск всех тестов
 ├── tests/
@@ -37,7 +38,8 @@ DorisAutomatiomAPI/
 │   ├── tests_metro/                 # Тесты для Метрополитен
 │   ├── tests_parking/               # Тесты для Парковок
 │   ├── tests_digital_twin/          # Тесты для Цифрового двойника
-│   └── tests_external_transport/    # Тесты для Внешнего транспорта
+│   ├── tests_external_transport/    # Тесты для Внешнего транспорта
+│   └── tests_water_transport/       # Тесты для Водного транспорта
 ├── .env                             # Токен авторизации (не в git)
 └── requirements.txt                 # Зависимости проекта
 ```
@@ -79,6 +81,9 @@ pytest tests/tests_digital_twin/ -v
 
 # External Transport
 pytest tests/tests_external_transport/ -v
+
+# Water Transport
+pytest tests/tests_water_transport/ -v
 ```
 
 ### 5. Проверка токенов

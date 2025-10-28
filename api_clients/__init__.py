@@ -9,6 +9,7 @@ from .metro import MetroAPIClient
 from .parking import ParkingAPIClient
 from .digital_twin import DigitalTwinAPIClient
 from .external_transport import ExternalTransportAPIClient
+from .water_transport import WaterTransportAPIClient
 
 __all__ = [
     'IncidentsAPIClient',
@@ -17,5 +18,6 @@ __all__ = [
     'ParkingAPIClient',
     'DigitalTwinAPIClient',
     'ExternalTransportAPIClient',
+    'WaterTransportAPIClient',
 ]
 

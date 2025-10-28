@@ -124,6 +124,11 @@ jobs:
         pytest tests/tests_external_transport/ -v --tb=short
       continue-on-error: true
     
+    - name: Запуск тестов Water Transport
+      run: |
+        pytest tests/tests_water_transport/ -v --tb=short
+      continue-on-error: true
+    
     - name: Генерация Allure отчета
       if: always()
       run: |
