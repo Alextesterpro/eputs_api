@@ -1,0 +1,2 @@
+✓ Passenger count report: headers найдены (7 полей)
+✓ Passenger count report: получено 0 строк

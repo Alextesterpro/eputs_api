@@ -1,0 +1,5 @@
+✓ Шаг 1 (CREATE): тип ID=147, name='Workflow тип 4276'
+✓ Шаг 2 (UPDATE): тип ID=147 обновлен, new_name='Апи редактирование 4276'
+✓ Шаг 3 (DELETE): тип ID=147 удален
+
+✓ Workflow завершен успешно: CREATE -> UPDATE -> DELETE

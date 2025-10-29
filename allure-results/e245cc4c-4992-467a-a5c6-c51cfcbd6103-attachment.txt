@@ -1,0 +1,1 @@
+Factors get by ID работает

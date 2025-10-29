@@ -1,0 +1,2 @@
+✓ Get graph: найдено 11356 ребер (edges)
+✓ Get graph: найдено 6046 узлов (nodes)

@@ -121,7 +121,7 @@ class TestWaterTransportVehicles:
         # ===== UPDATE =====
         random_int_update = random.randint(1000, 9999)
         updated_name = f"Апи редактирование {random_int_update}"
-        updated_short_name = "Updated Ship"
+        updated_short_name = f"Updated Ship {random.randint(1000, 9999)}"
         mmsi_update = str(random.randint(100000000, 999999999))
         imo_update = str(random.randint(1000000, 9999999))
         

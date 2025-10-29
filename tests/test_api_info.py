@@ -132,6 +132,15 @@ class TestTokenCheck:
         finally:
             incidents_client.token = original_token
             incidents_client.headers = incidents_client._get_headers()
+    
+    def test_passenger_transport_token_check(self, passenger_transport_client):
+        """Проверка токена для Passenger Transport API"""
+        result = passenger_transport_client.check_token()
+        
+        print(f"\nПассажирский транспорт API:")
+        print(f"  Токен валиден: {result}")
+        
+        assert result is True, "Токен должен быть валидным!"
 
 
 if __name__ == "__main__":

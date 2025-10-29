@@ -17,6 +17,7 @@ MODULES = {
     'digital_twin': 'tests/tests_digital_twin/',
     'external_transport': 'tests/tests_external_transport/',
     'water_transport': 'tests/tests_water_transport/',
+    'passenger_transport': 'tests/tests_passenger_transport/',
     'all': 'tests/'
 }
 
@@ -26,7 +27,7 @@ def run_tests(module='all', verbose=True, parallel=False, allure=False, html=Fal
     Запуск тестов с указанными параметрами
     
     Args:
-        module: модуль для запуска (incidents, dtp, metro, parking, digital_twin, external_transport, water_transport, all)
+        module: модуль для запуска (incidents, dtp, metro, parking, digital_twin, external_transport, water_transport, passenger_transport, all)
         verbose: подробный вывод
         parallel: параллельный запуск
         allure: генерация Allure отчета

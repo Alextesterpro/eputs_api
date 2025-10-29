@@ -17,7 +17,8 @@ from api_clients import (
     ParkingAPIClient,
     DigitalTwinAPIClient,
     ExternalTransportAPIClient,
-    WaterTransportAPIClient
+    WaterTransportAPIClient,
+    PassengerTransportAPIClient
 )
 
 
@@ -61,4 +62,10 @@ def external_transport_client():
 def water_transport_client():
     """Фикстура для предоставления API клиента Водный транспорт"""
     return WaterTransportAPIClient()
+
+
+@pytest.fixture(scope="module")
+def passenger_transport_client():
+    """Фикстура для предоставления API клиента Пассажирский транспорт"""
+    return PassengerTransportAPIClient()
 
