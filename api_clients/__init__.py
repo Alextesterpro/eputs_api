@@ -11,6 +11,7 @@ from .digital_twin import DigitalTwinAPIClient
 from .external_transport import ExternalTransportAPIClient
 from .water_transport import WaterTransportAPIClient
 from .passenger_transport import PassengerTransportAPIClient
+from .data_bus import DataBusAPIClient
 
 __all__ = [
     'IncidentsAPIClient',
@@ -21,5 +22,6 @@ __all__ = [
     'ExternalTransportAPIClient',
     'WaterTransportAPIClient',
     'PassengerTransportAPIClient',
+    'DataBusAPIClient',
 ]
 

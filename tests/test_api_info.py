@@ -141,6 +141,15 @@ class TestTokenCheck:
         print(f"  Токен валиден: {result}")
         
         assert result is True, "Токен должен быть валидным!"
+    
+    def test_data_bus_token_check(self, data_bus_client):
+        """Проверка токена для Data Bus API"""
+        result = data_bus_client.check_token()
+        
+        print(f"\nData Bus (Общая шина) API:")
+        print(f"  Токен валиден: {result}")
+        
+        assert result is True, "Токен должен быть валидным!"
 
 
 if __name__ == "__main__":
