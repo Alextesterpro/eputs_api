@@ -67,7 +67,7 @@ class DigitalTwinAPIClient:
     def get_infrastructure_list(self, page=1, limit=25):
         """Получить список объектов инфраструктуры"""
         params = {"page": page, "limit": limit}
-        return requests.get(f"{self.road_network_url}/infrastructure", params=params, headers=self.headers, verify=False)
+        return requests.get(f"{self.road_network_url}/infrastructure", params=params, headers=self.headers, verify=False, timeout=30)
     
     def get_infrastructure_by_polygon(self, polygon_data):
         """Получить объекты инфраструктуры по полигону"""
@@ -101,7 +101,7 @@ class DigitalTwinAPIClient:
     def get_infrastructure_types_list(self, page=1, limit=25):
         """Получить список типов объектов инфраструктуры"""
         params = {"page": page, "limit": limit}
-        return requests.get(f"{self.road_network_url}/infrastructure_type", params=params, headers=self.headers, verify=False)
+        return requests.get(f"{self.road_network_url}/infrastructure_type", params=params, headers=self.headers, verify=False, timeout=30)
     
     def create_infrastructure_type(self, name):
         """Создать тип объекта инфраструктуры"""
