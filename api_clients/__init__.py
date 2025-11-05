@@ -12,6 +12,7 @@ from .external_transport import ExternalTransportAPIClient
 from .water_transport import WaterTransportAPIClient
 from .passenger_transport import PassengerTransportAPIClient
 from .data_bus import DataBusAPIClient
+from .organizations import OrganizationsAPIClient
 
 __all__ = [
     'IncidentsAPIClient',
@@ -23,5 +24,6 @@ __all__ = [
     'WaterTransportAPIClient',
     'PassengerTransportAPIClient',
     'DataBusAPIClient',
+    'OrganizationsAPIClient',
 ]
 

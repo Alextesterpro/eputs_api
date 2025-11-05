@@ -27,14 +27,14 @@ class TestCategories:
             data = categories.json()
             if data.get("data") and len(data["data"]) > 0:
                 category_id = data["data"][0].get("id")
-                if category_id:
+            if category_id:
                     result = incidents_client.get_category_by_id(category_id)
                     assert result.status_code == 200, f"Status code: {result.status_code}"
                     response_data = result.json()
                     assert "data" in response_data, "Нет поля data"
-                    print("Categories get by ID работает")
+                print("Categories get by ID работает")
                     return
-        pytest.skip("Нет категорий для тестирования")
+            pytest.skip("Нет категорий для тестирования")
     
     def test_categories_create(self, incidents_client):
         """Тест создания категории"""
@@ -55,12 +55,12 @@ class TestCategories:
             data = categories.json()
             if data.get("data") and len(data["data"]) > 0:
                 category_id = data["data"][0].get("id")
-                if category_id:
+            if category_id:
                     result = incidents_client.update_category(category_id, description="Обновлено")
                     assert result.status_code in [200, 201], f"Status code: {result.status_code}"
-                    print("Categories update работает")
+                print("Categories update работает")
                     return
-        pytest.skip("Нет категорий для обновления")
+            pytest.skip("Нет категорий для обновления")
     
     def test_categories_delete(self, incidents_client):
         """Тест удаления категории"""
@@ -70,12 +70,12 @@ class TestCategories:
             data = categories.json()
             if data.get("data") and len(data["data"]) > 0:
                 category_id = data["data"][0].get("id")
-                if category_id:
+            if category_id:
                     result = incidents_client.delete_category(category_id)
                     assert result.status_code in [200, 204], f"Status code: {result.status_code}"
-                    print("Categories delete работает")
+                print("Categories delete работает")
                     return
-        pytest.skip("Нет категорий для удаления")
+            pytest.skip("Нет категорий для удаления")
 
 
 if __name__ == "__main__":

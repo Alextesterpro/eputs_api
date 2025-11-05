@@ -27,14 +27,14 @@ class TestKeywords:
             data = keywords.json()
             if data.get("data") and len(data["data"]) > 0:
                 keyword_id = data["data"][0].get("id")
-                if keyword_id:
+            if keyword_id:
                     result = incidents_client.get_keyword_by_id(keyword_id)
                     assert result.status_code == 200, f"Status code: {result.status_code}"
                     response_data = result.json()
                     assert "data" in response_data, "Нет поля data"
-                    print("Keywords get by ID работает")
+                print("Keywords get by ID работает")
                     return
-        pytest.skip("Нет ключевых слов для тестирования")
+            pytest.skip("Нет ключевых слов для тестирования")
     
     def test_keywords_create(self, incidents_client):
         """Тест создания ключевого слова"""
@@ -55,12 +55,12 @@ class TestKeywords:
             data = keywords.json()
             if data.get("data") and len(data["data"]) > 0:
                 keyword_id = data["data"][0].get("id")
-                if keyword_id:
+            if keyword_id:
                     result = incidents_client.update_keyword(keyword_id, description="Обновлено")
                     assert result.status_code in [200, 201], f"Status code: {result.status_code}"
-                    print("Keywords update работает")
+                print("Keywords update работает")
                     return
-        pytest.skip("Нет ключевых слов для обновления")
+            pytest.skip("Нет ключевых слов для обновления")
     
     def test_keywords_delete(self, incidents_client):
         """Тест удаления ключевого слова"""
@@ -70,12 +70,12 @@ class TestKeywords:
             data = keywords.json()
             if data.get("data") and len(data["data"]) > 0:
                 keyword_id = data["data"][0].get("id")
-                if keyword_id:
+            if keyword_id:
                     result = incidents_client.delete_keyword(keyword_id)
                     assert result.status_code in [200, 204], f"Status code: {result.status_code}"
-                    print("Keywords delete работает")
+                print("Keywords delete работает")
                     return
-        pytest.skip("Нет ключевых слов для удаления")
+            pytest.skip("Нет ключевых слов для удаления")
 
 
 if __name__ == "__main__":

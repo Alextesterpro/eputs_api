@@ -151,6 +151,15 @@ class TestTokenCheck:
         print(f"  Токен валиден: {result}")
         
         assert result is True, "Токен должен быть валидным!"
+    
+    def test_organizations_token_check(self, organizations_client):
+        """Проверка токена для Organizations API"""
+        result = organizations_client.check_token()
+        
+        print(f"\nOrganizations (Организации) API:")
+        print(f"  Токен валиден: {result}")
+        
+        assert result is True, "Токен должен быть валидным!"
 
 
 if __name__ == "__main__":

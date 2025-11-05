@@ -19,7 +19,8 @@ from api_clients import (
     ExternalTransportAPIClient,
     WaterTransportAPIClient,
     PassengerTransportAPIClient,
-    DataBusAPIClient
+    DataBusAPIClient,
+    OrganizationsAPIClient
 )
 
 
@@ -75,4 +76,10 @@ def passenger_transport_client():
 def data_bus_client():
     """Фикстура для предоставления API клиента Data Bus (Общая шина)"""
     return DataBusAPIClient()
+
+
+@pytest.fixture(scope="module")
+def organizations_client():
+    """Фикстура для предоставления API клиента Organizations (Организации)"""
+    return OrganizationsAPIClient()
 

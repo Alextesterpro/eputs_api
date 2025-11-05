@@ -27,14 +27,14 @@ class TestFactors:
             data = factors.json()
             if data.get("data") and len(data["data"]) > 0:
                 factor_id = data["data"][0].get("id")
-                if factor_id:
+            if factor_id:
                     result = incidents_client.get_factor_by_id(factor_id)
                     assert result.status_code == 200, f"Status code: {result.status_code}"
                     response_data = result.json()
                     assert "data" in response_data, "Нет поля data"
-                    print("Factors get by ID работает")
+                print("Factors get by ID работает")
                     return
-        pytest.skip("Нет факторов для тестирования")
+            pytest.skip("Нет факторов для тестирования")
     
     def test_factors_pagination(self, incidents_client):
         """Тест пагинации факторов"""
@@ -64,7 +64,7 @@ class TestFactors:
     
     def test_factors_update(self, incidents_client):
         """Тест обновления фактора"""
-        # Сначала получаем существующий фактор
+            # Сначала получаем существующий фактор
         factors = incidents_client.get_factors_list()
         if factors.status_code == 200:
             data = factors.json()
@@ -78,11 +78,11 @@ class TestFactors:
                     assert result.status_code in [200, 201], f"Status code: {result.status_code}"
                     print("Factors update работает")
                     return
-        pytest.skip("Нет факторов для обновления")
+                pytest.skip("Нет факторов для обновления")
     
     def test_factors_delete(self, incidents_client):
         """Тест удаления фактора"""
-        # Сначала получаем существующий фактор
+            # Сначала получаем существующий фактор
         factors = incidents_client.get_factors_list()
         if factors.status_code == 200:
             data = factors.json()
@@ -96,7 +96,7 @@ class TestFactors:
                     assert result.status_code in [200, 204], f"Status code: {result.status_code}"
                     print("Factors delete работает")
                     return
-        pytest.skip("Нет факторов для удаления")
+                pytest.skip("Нет факторов для удаления")
 
 
 if __name__ == "__main__":

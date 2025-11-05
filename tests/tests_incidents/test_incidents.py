@@ -55,7 +55,7 @@ class TestIncidents:
         data = incidents.json()
         if not data.get("data") or len(data["data"]) == 0:
             pytest.skip("Нет инцидентов для тестирования")
-        
+    
         incident_id = data["data"][0].get("id")
         if not incident_id:
             pytest.skip("ID инцидента не найден")
@@ -159,7 +159,7 @@ class TestIncidents:
         data = incidents.json()
         if not data.get("data") or len(data["data"]) == 0:
             pytest.skip("Нет инцидентов для обновления")
-        
+    
         incident = data["data"][0]
         incident_id = incident.get("id")
         if not incident_id:
@@ -221,7 +221,7 @@ class TestIncidents:
             get_data = get_result.json()
             if not get_data.get("data") or get_data.get("data", {}).get("deleted"):
                 print(f"✓ VERIFY: инцидент ID={incident_id} помечен как удаленный")
-            else:
+        else:
                 print(f"⚠ WARNING: инцидент ID={incident_id} все еще доступен после удаления")
 
 

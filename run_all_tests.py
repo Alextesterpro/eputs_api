@@ -19,6 +19,7 @@ MODULES = {
     'water_transport': 'tests/tests_water_transport/',
     'passenger_transport': 'tests/tests_passenger_transport/',
     'data_bus': 'tests/tests_data_bus/',
+    'organizations': 'tests/tests_organizations/',
     'all': 'tests/'
 }
 
