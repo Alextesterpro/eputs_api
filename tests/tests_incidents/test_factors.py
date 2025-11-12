@@ -28,12 +28,12 @@ class TestFactors:
             if data.get("data") and len(data["data"]) > 0:
                 factor_id = data["data"][0].get("id")
             if factor_id:
-                    result = incidents_client.get_factor_by_id(factor_id)
-                    assert result.status_code == 200, f"Status code: {result.status_code}"
-                    response_data = result.json()
-                    assert "data" in response_data, "Нет поля data"
+                result = incidents_client.get_factor_by_id(factor_id)
+                assert result.status_code == 200, f"Status code: {result.status_code}"
+                response_data = result.json()
+                assert "data" in response_data, "Нет поля data"
                 print("Factors get by ID работает")
-                    return
+                return
             pytest.skip("Нет факторов для тестирования")
     
     def test_factors_pagination(self, incidents_client):

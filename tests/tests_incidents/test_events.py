@@ -28,12 +28,12 @@ class TestEvents:
             if data.get("data") and len(data["data"]) > 0:
                 event_id = data["data"][0].get("id")
             if event_id:
-                    result = incidents_client.get_event_by_id(event_id)
-                    assert result.status_code == 200, f"Status code: {result.status_code}"
-                    response_data = result.json()
-                    assert "data" in response_data, "Нет поля data"
+                result = incidents_client.get_event_by_id(event_id)
+                assert result.status_code == 200, f"Status code: {result.status_code}"
+                response_data = result.json()
+                assert "data" in response_data, "Нет поля data"
                 print("Events get by ID работает")
-                    return
+                return
             pytest.skip("Нет событий для тестирования")
     
     def test_events_create(self, incidents_client):
@@ -56,10 +56,10 @@ class TestEvents:
             if data.get("data") and len(data["data"]) > 0:
                 event_id = data["data"][0].get("id")
             if event_id:
-                    result = incidents_client.update_event(event_id, description="Обновлено")
-                    assert result.status_code in [200, 201], f"Status code: {result.status_code}"
+                result = incidents_client.update_event(event_id, description="Обновлено")
+                assert result.status_code in [200, 201], f"Status code: {result.status_code}"
                 print("Events update работает")
-                    return
+                return
             pytest.skip("Нет событий для обновления")
     
     def test_events_delete(self, incidents_client):
@@ -71,10 +71,10 @@ class TestEvents:
             if data.get("data") and len(data["data"]) > 0:
                 event_id = data["data"][0].get("id")
             if event_id:
-                    result = incidents_client.delete_event(event_id)
-                    assert result.status_code in [200, 204], f"Status code: {result.status_code}"
+                result = incidents_client.delete_event(event_id)
+                assert result.status_code in [200, 204], f"Status code: {result.status_code}"
                 print("Events delete работает")
-                    return
+                return
             pytest.skip("Нет событий для удаления")
 
 

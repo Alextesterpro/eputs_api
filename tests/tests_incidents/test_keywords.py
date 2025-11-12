@@ -28,12 +28,12 @@ class TestKeywords:
             if data.get("data") and len(data["data"]) > 0:
                 keyword_id = data["data"][0].get("id")
             if keyword_id:
-                    result = incidents_client.get_keyword_by_id(keyword_id)
-                    assert result.status_code == 200, f"Status code: {result.status_code}"
-                    response_data = result.json()
-                    assert "data" in response_data, "Нет поля data"
+                result = incidents_client.get_keyword_by_id(keyword_id)
+                assert result.status_code == 200, f"Status code: {result.status_code}"
+                response_data = result.json()
+                assert "data" in response_data, "Нет поля data"
                 print("Keywords get by ID работает")
-                    return
+                return
             pytest.skip("Нет ключевых слов для тестирования")
     
     def test_keywords_create(self, incidents_client):
@@ -56,10 +56,10 @@ class TestKeywords:
             if data.get("data") and len(data["data"]) > 0:
                 keyword_id = data["data"][0].get("id")
             if keyword_id:
-                    result = incidents_client.update_keyword(keyword_id, description="Обновлено")
-                    assert result.status_code in [200, 201], f"Status code: {result.status_code}"
+                result = incidents_client.update_keyword(keyword_id, description="Обновлено")
+                assert result.status_code in [200, 201], f"Status code: {result.status_code}"
                 print("Keywords update работает")
-                    return
+                return
             pytest.skip("Нет ключевых слов для обновления")
     
     def test_keywords_delete(self, incidents_client):
@@ -71,10 +71,10 @@ class TestKeywords:
             if data.get("data") and len(data["data"]) > 0:
                 keyword_id = data["data"][0].get("id")
             if keyword_id:
-                    result = incidents_client.delete_keyword(keyword_id)
-                    assert result.status_code in [200, 204], f"Status code: {result.status_code}"
+                result = incidents_client.delete_keyword(keyword_id)
+                assert result.status_code in [200, 204], f"Status code: {result.status_code}"
                 print("Keywords delete работает")
-                    return
+                return
             pytest.skip("Нет ключевых слов для удаления")
 
 
