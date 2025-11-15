@@ -116,7 +116,7 @@ class TestWaterTransportVehicles:
         if "imo" in vehicle_data:
             assert str(vehicle_data["imo"]) == imo, f"IMO не совпадает: ожидалось '{imo}', получено '{vehicle_data['imo']}'"
         
-        print(f"✓ CREATE: создано транспортное средство ID={vehicle_id}, name='{original_name}'")
+        print(f" CREATE: создано транспортное средство ID={vehicle_id}, name='{original_name}'")
         
         # ===== UPDATE =====
         random_int_update = random.randint(1000, 9999)
@@ -146,7 +146,7 @@ class TestWaterTransportVehicles:
                 assert updated_vehicle["name"] == updated_name, f"Name не обновился: '{updated_vehicle['name']}'"
                 assert updated_vehicle["name"] != original_name, "Name не изменился после UPDATE"
         
-        print(f"✓ UPDATE: обновлено транспортное средство ID={vehicle_id}, new_name='{updated_name}'")
+        print(f" UPDATE: обновлено транспортное средство ID={vehicle_id}, new_name='{updated_name}'")
         
         # ===== DELETE =====
         response_delete = water_transport_client.vehicle_delete(vehicle_id)
@@ -156,7 +156,7 @@ class TestWaterTransportVehicles:
         delete_data = response_delete.json()
         assert delete_data.get("success") is True, "Нет success=true при удалении"
         
-        print(f"✓ DELETE: удалено транспортное средство ID={vehicle_id}")
+        print(f" DELETE: удалено транспортное средство ID={vehicle_id}")
         
         # ===== ПРОВЕРКА ЧТО ОБЪЕКТ УДАЛЕН =====
         # Попытка получить удаленный объект через list
@@ -168,7 +168,7 @@ class TestWaterTransportVehicles:
             # Проверяем что удаленного ID нет в списке
             deleted_ids = [item.get("id") for item in items if item.get("id") == vehicle_id]
             assert len(deleted_ids) == 0, f"Удаленный объект ID={vehicle_id} все еще присутствует в списке!"
-            print(f"✓ VERIFY: подтверждено удаление - объект ID={vehicle_id} отсутствует в списке")
+            print(f" VERIFY: подтверждено удаление - объект ID={vehicle_id} отсутствует в списке")
 
     def test_vehicle_create_with_invalid_mmsi(self, water_transport_client):
         """Тест создания с некорректным MMSI (негативный сценарий)"""
@@ -197,12 +197,12 @@ class TestWaterTransportVehicles:
                 data = response.json()
                 assert data.get("success") is False or "error" in data or "message" in data, \
                     "При ошибке должно быть success=false или поле error/message"
-                print(f"✓ Валидация работает: API отклонил некорректный MMSI ({invalid_mmsi})")
+                print(f" Валидация работает: API отклонил некорректный MMSI ({invalid_mmsi})")
             
             elif response.status_code == 200:
                 # API принял невалидные данные - удаляем и логируем проблему
                 data = response.json()
-                print(f"⚠ Проблема валидации: API принял некорректный MMSI ({invalid_mmsi})")
+                print(f"WARNING: Проблема валидации: API принял некорректный MMSI ({invalid_mmsi})")
                 
                 if data.get("success") and data.get("data", {}).get("id"):
                     vehicle_id = data["data"]["id"]
@@ -236,12 +236,12 @@ class TestWaterTransportVehicles:
             data = response.json()
             assert data.get("success") is False or "error" in data or "message" in data, \
                 "При ошибке должно быть success=false или поле error/message"
-            print(f"✓ Валидация работает: API отклонил некорректный IMO ({invalid_imo})")
+            print(f" Валидация работает: API отклонил некорректный IMO ({invalid_imo})")
         
         elif response.status_code == 200:
             # API принял невалидные данные - удаляем и логируем проблему
             data = response.json()
-            print(f"⚠ Проблема валидации: API принял некорректный IMO ({invalid_imo})")
+            print(f"WARNING: Проблема валидации: API принял некорректный IMO ({invalid_imo})")
             
             if data.get("success") and data.get("data", {}).get("id"):
                 vehicle_id = data["data"]["id"]
@@ -262,7 +262,7 @@ class TestWaterTransportVehicles:
         # API должен вернуть ошибку при попытке удалить несуществующий объект
         if response.status_code == 404:
             # Правильное поведение - объект не найден
-            print(f"✓ API корректно вернул 404 для несуществующего ID={nonexistent_id}")
+            print(f" API корректно вернул 404 для несуществующего ID={nonexistent_id}")
         
         elif response.status_code == 200:
             # API вернул 200 - проверяем success
@@ -271,14 +271,14 @@ class TestWaterTransportVehicles:
             if data.get("success") is False:
                 # Правильно - success=false указывает на проблему
                 assert "error" in data or "message" in data, "Должно быть поле error или message"
-                print(f"✓ API вернул success=false для несуществующего ID={nonexistent_id}")
+                print(f" API вернул success=false для несуществующего ID={nonexistent_id}")
             else:
                 # Проблема - API сообщает об успешном удалении несуществующего объекта
-                pytest.fail(f"⚠ API вернул success=true для несуществующего объекта ID={nonexistent_id}")
+                pytest.fail(f"WARNING: API вернул success=true для несуществующего объекта ID={nonexistent_id}")
         
         elif response.status_code in [400, 422]:
             # Тоже приемлемое поведение - Bad Request
-            print(f"✓ API вернул {response.status_code} для несуществующего ID={nonexistent_id}")
+            print(f" API вернул {response.status_code} для несуществующего ID={nonexistent_id}")
         
         else:
             pytest.fail(f"Неожиданный статус код: {response.status_code}")

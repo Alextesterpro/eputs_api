@@ -67,7 +67,7 @@ class TestBrandsCRUD:
         assert create_data.get("success") is True, "Шаг 1: нет success=true"
         
         brand_id = create_data["data"]["id"]
-        print(f"✓ Шаг 1 (CREATE): марка ID={brand_id}, name_ru='{name_ru}'")
+        print(f" Шаг 1 (CREATE): марка ID={brand_id}, name_ru='{name_ru}'")
         
         # ===== Шаг 2: UPDATE =====
         updated_name_ru = f"Апи редактирование {random_int}"
@@ -90,7 +90,7 @@ class TestBrandsCRUD:
         if "data" in update_data and "name_ru" in update_data["data"]:
             assert update_data["data"]["name_ru"] == updated_name_ru, "Name_ru не обновился"
         
-        print(f"✓ Шаг 2 (UPDATE): марка ID={brand_id} обновлена, new_name='{updated_name_ru}'")
+        print(f" Шаг 2 (UPDATE): марка ID={brand_id} обновлена, new_name='{updated_name_ru}'")
         
         # ===== Шаг 3: DELETE =====
         delete_result = passenger_transport_client.delete_brand(brand_id)
@@ -99,7 +99,7 @@ class TestBrandsCRUD:
         delete_data = delete_result.json()
         assert delete_data.get("success") is True, "Шаг 3: нет success=true"
         
-        print(f"✓ Шаг 3 (DELETE): марка ID={brand_id} удалена")
-        print(f"\n✓ Workflow завершен успешно: CREATE -> UPDATE -> DELETE")
+        print(f" Шаг 3 (DELETE): марка ID={brand_id} удалена")
+        print(f"\n Workflow завершен успешно: CREATE -> UPDATE -> DELETE")
 
 

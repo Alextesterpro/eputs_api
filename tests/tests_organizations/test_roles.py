@@ -34,7 +34,7 @@ class TestRolesList:
             assert "name" in first_role, "Отсутствует поле name"
             assert isinstance(first_role["id"], int), "ID должен быть числом"
             assert isinstance(first_role["name"], str), "Name должен быть строкой"
-            print(f"✓ Получено ролей: {len(items)}")
+            print(f" Получено ролей: {len(items)}")
 
 
 class TestRolesCRUD:
@@ -56,7 +56,7 @@ class TestRolesCRUD:
         
         role_id = create_data["data"]["id"]
         assert isinstance(role_id, int), "ID должен быть числом"
-        print(f"✓ Создана роль ID={role_id}, name='{create_name}'")
+        print(f" Создана роль ID={role_id}, name='{create_name}'")
         
         # Редактирование
         update_name = f"Апи редактирование {random.randint(1000, 9999)}"
@@ -65,7 +65,7 @@ class TestRolesCRUD:
         assert update_response.status_code == 200, f"Update status: {update_response.status_code}"
         update_data = update_response.json()
         assert update_data.get("success") is True, "Update: нет success=true"
-        print(f"✓ Обновлена роль ID={role_id}, new_name='{update_name}'")
+        print(f" Обновлена роль ID={role_id}, new_name='{update_name}'")
         
         # Удаление
         delete_response = organizations_client.role_delete(role_id=role_id)
@@ -73,5 +73,5 @@ class TestRolesCRUD:
         assert delete_response.status_code == 200, f"Delete status: {delete_response.status_code}"
         delete_data = delete_response.json()
         assert delete_data.get("success") is True, "Delete: нет success=true"
-        print(f"✓ Удалена роль ID={role_id}")
+        print(f" Удалена роль ID={role_id}")
 

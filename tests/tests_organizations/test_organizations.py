@@ -35,7 +35,7 @@ class TestOrganizationsList:
             assert "inn" in first_org, "Отсутствует поле inn"
             assert isinstance(first_org["id"], int), "ID должен быть числом"
             assert isinstance(first_org["title"], str), "Title должен быть строкой"
-            print(f"✓ Получено организаций: {len(items)}")
+            print(f" Получено организаций: {len(items)}")
 
 
 class TestOrganizationsCRUD:
@@ -82,11 +82,11 @@ class TestOrganizationsCRUD:
             
             org_id = data["data"]["id"]
             assert isinstance(org_id, int), "ID должен быть числом"
-            print(f"✓ Создана организация ID={org_id}")
+            print(f" Создана организация ID={org_id}")
             
             # Cleanup
             organizations_client.organization_delete(org_id)
-            print(f"✓ Cleanup: удалена организация ID={org_id}")
+            print(f" Cleanup: удалена организация ID={org_id}")
         
         except (requests.exceptions.Timeout, requests.exceptions.ReadTimeout):
             pytest.skip("API timeout при создании организации")
@@ -128,7 +128,7 @@ class TestOrganizationsCRUD:
             assert create_response.status_code == 200, "Шаг 1 (CREATE) failed"
             create_data = create_response.json()
             org_id = create_data["data"]["id"]
-            print(f"✓ Шаг 1: Создана организация ID={org_id}")
+            print(f" Шаг 1: Создана организация ID={org_id}")
             
             # Шаг 2: Обновление
             update_response = organizations_client.organization_update(
@@ -139,7 +139,7 @@ class TestOrganizationsCRUD:
             assert update_response.status_code == 200, "Шаг 2 (UPDATE) failed"
             update_data = update_response.json()
             assert update_data.get("success") is True, "Update: нет success=true"
-            print(f"✓ Шаг 2: Обновлена организация ID={org_id}")
+            print(f" Шаг 2: Обновлена организация ID={org_id}")
             
             # Шаг 3: Удаление
             delete_response = organizations_client.organization_delete(org_id)
@@ -147,7 +147,7 @@ class TestOrganizationsCRUD:
             assert delete_response.status_code == 200, "Шаг 3 (DELETE) failed"
             delete_data = delete_response.json()
             assert delete_data.get("success") is True, "Delete: нет success=true"
-            print(f"✓ Шаг 3: Удалена организация ID={org_id}")
+            print(f" Шаг 3: Удалена организация ID={org_id}")
         
         except (requests.exceptions.Timeout, requests.exceptions.ReadTimeout):
             pytest.skip("API timeout при workflow организации")

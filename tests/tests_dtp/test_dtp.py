@@ -100,7 +100,7 @@ class TestDTP:
         if "count" in population:
             assert population["count"] == count, f"Count не совпадает: ожидалось {count}, получено {population['count']}"
         
-        print(f"✓ CREATE Population: year={year}, count={count}")
+        print(f" CREATE Population: year={year}, count={count}")
     
     def test_dtp_concentration_areas_list(self, dtp_client):
         """Тест получения списка МКДТП"""
@@ -222,7 +222,7 @@ class TestDTP:
         if "lon" in dtp:
             assert abs(dtp["lon"] - lon) < 0.0001, f"Longitude не совпадает"
         
-        print(f"✓ CREATE DTP: ID={dtp_id}, coords=({lat}, {lon}), description='{description}'")
+        print(f" CREATE DTP: ID={dtp_id}, coords=({lat}, {lon}), description='{description}'")
     
     def test_dtp_report_by_percent(self, dtp_client):
         """Тест отчета по типам ДТП (по процентам)"""
@@ -245,9 +245,9 @@ class TestDTP:
             report_data = data["data"]
             # Проверяем что это не пустой ответ
             assert report_data is not None, "Данные отчета не должны быть None"
-            print(f"✓ Отчет по процентам: получены данные, тип={type(report_data).__name__}")
+            print(f" Отчет по процентам: получены данные, тип={type(report_data).__name__}")
         else:
-            print("✓ Отчет по процентам: success=true (данные в другом формате)")
+            print(" Отчет по процентам: success=true (данные в другом формате)")
     
     def test_dtp_by_time(self, dtp_client):
         """Тест отчета ДТП по времени суток"""
@@ -272,11 +272,11 @@ class TestDTP:
             
             # Если это список или словарь, проверяем что не пустой
             if isinstance(report_data, (list, dict)):
-                print(f"✓ Отчет по времени: получены данные, элементов={len(report_data)}")
+                print(f" Отчет по времени: получены данные, элементов={len(report_data)}")
             else:
-                print(f"✓ Отчет по времени: получены данные")
+                print(f" Отчет по времени: получены данные")
         else:
-            print("✓ Отчет по времени: success=true")
+            print(" Отчет по времени: success=true")
     
     def test_dtp_count_by_periods(self, dtp_client):
         """Тест отчета по сравнению периодов"""
@@ -303,11 +303,11 @@ class TestDTP:
             # Если это список, проверяем что кол-во периодов совпадает
             if isinstance(report_data, list):
                 assert len(report_data) <= len(dates) + 1, "Количество периодов в ответе больше ожидаемого"
-                print(f"✓ Отчет по периодам: сравнено {len(dates)} периодов, получено {len(report_data)} результатов")
+                print(f" Отчет по периодам: сравнено {len(dates)} периодов, получено {len(report_data)} результатов")
             else:
-                print(f"✓ Отчет по периодам: получены данные, тип={type(report_data).__name__}")
+                print(f" Отчет по периодам: получены данные, тип={type(report_data).__name__}")
         else:
-            print("✓ Отчет по периодам: success=true")
+            print(" Отчет по периодам: success=true")
 
 
 if __name__ == "__main__":

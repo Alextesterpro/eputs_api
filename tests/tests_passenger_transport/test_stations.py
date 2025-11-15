@@ -94,7 +94,7 @@ class TestStationsCRUD:
         if "name" in station:
             assert station["name"] == name, "Name не совпадает"
         
-        print(f"✓ CREATE: остановка ID={station_id}, name='{name}'")
+        print(f" CREATE: остановка ID={station_id}, name='{name}'")
     
     def test_station_workflow(self, passenger_transport_client):
         """Workflow: CREATE -> UPDATE -> DELETE остановки"""
@@ -130,7 +130,7 @@ class TestStationsCRUD:
         assert create_data.get("success") is True, "Шаг 1: нет success=true"
         
         station_id = create_data["data"]["id"]
-        print(f"✓ Шаг 1 (CREATE): остановка ID={station_id}, name='{original_name}'")
+        print(f" Шаг 1 (CREATE): остановка ID={station_id}, name='{original_name}'")
         
         # ===== Шаг 2: UPDATE =====
         updated_name = f"Апи редактирование {random_int}"
@@ -151,7 +151,7 @@ class TestStationsCRUD:
         update_data = update_result.json()
         assert update_data.get("success") is True, "Шаг 2: нет success=true"
         
-        print(f"✓ Шаг 2 (UPDATE): остановка ID={station_id} обновлена, new_name='{updated_name}'")
+        print(f" Шаг 2 (UPDATE): остановка ID={station_id} обновлена, new_name='{updated_name}'")
         
         # ===== Шаг 3: DELETE =====
         delete_result = passenger_transport_client.delete_station(station_id)
@@ -160,7 +160,7 @@ class TestStationsCRUD:
         delete_data = delete_result.json()
         assert delete_data.get("success") is True, "Шаг 3: нет success=true"
         
-        print(f"✓ Шаг 3 (DELETE): остановка ID={station_id} удалена")
-        print(f"\n✓ Workflow завершен успешно: CREATE -> UPDATE -> DELETE")
+        print(f" Шаг 3 (DELETE): остановка ID={station_id} удалена")
+        print(f"\n Workflow завершен успешно: CREATE -> UPDATE -> DELETE")
 
 

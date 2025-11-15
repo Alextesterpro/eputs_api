@@ -71,9 +71,9 @@ class TestMetro:
                 
                 print(f"Пример порога: {first_threshold}")
             
-            print(f"✓ Получено порогов: {len(thresholds)}")
+            print(f" Получено порогов: {len(thresholds)}")
         else:
-            print("✓ Список порогов: success=true")
+            print(" Список порогов: success=true")
     
     def test_vestibule_traffic_report(self, metro_client):
         """Тест получения отчета о пассажиропотоке"""
@@ -102,11 +102,11 @@ class TestMetro:
                     first_item = report_data[0]
                     # Проверяем что есть какие-то данные о пассажирах
                     assert len(first_item) > 0, "Элементы отчета не должны быть пустыми"
-                print(f"✓ Отчет о пассажиропотоке: {len(report_data)} записей за {today.strftime('%Y-%m-%d')}")
+                print(f" Отчет о пассажиропотоке: {len(report_data)} записей за {today.strftime('%Y-%m-%d')}")
             else:
-                print(f"✓ Отчет о пассажиропотоке: получены данные, тип={type(report_data).__name__}")
+                print(f" Отчет о пассажиропотоке: получены данные, тип={type(report_data).__name__}")
         else:
-            print("✓ Отчет о пассажиропотоке: success=true")
+            print(" Отчет о пассажиропотоке: success=true")
     
     def test_generate_passenger_report(self, metro_client):
         """Тест генерации отчета о пассажирах в разных форматах"""
@@ -135,13 +135,13 @@ class TestMetro:
             # Проверяем что есть информация о сгенерированных файлах или ссылках
             if isinstance(report_info, dict):
                 # Может быть поле с ссылками на файлы или статусом
-                print(f"✓ Отчет сгенерирован: {report_info}")
+                print(f" Отчет сгенерирован: {report_info}")
             elif isinstance(report_info, list):
-                print(f"✓ Отчет сгенерирован: {len(report_info)} файлов")
+                print(f" Отчет сгенерирован: {len(report_info)} файлов")
             else:
-                print(f"✓ Отчет сгенерирован: данные получены")
+                print(f" Отчет сгенерирован: данные получены")
         else:
-            print(f"✓ Отчет сгенерирован для {date_str} в форматах: {', '.join(formats)}")
+            print(f" Отчет сгенерирован для {date_str} в форматах: {', '.join(formats)}")
 
 
 class TestMetroUpdate:
@@ -188,7 +188,7 @@ class TestMetroUpdate:
         data = result.json()
         assert data.get("success") is True, "Отсутствует success=true при обновлении"
         
-        print(f"✓ UPDATE: обновлено {len(updated_thresholds)} порогов пассажиропотока")
+        print(f" UPDATE: обновлено {len(updated_thresholds)} порогов пассажиропотока")
         
         # Проверяем что значения действительно изменились (опционально)
         verify_result = metro_client.get_vestibule_traffic_thresholds_list()
@@ -208,7 +208,7 @@ class TestMetroUpdate:
                             changes_verified += 1
                 
                 if changes_verified > 0:
-                    print(f"✓ VERIFY: подтверждено изменение {changes_verified} порогов")
+                    print(f" VERIFY: подтверждено изменение {changes_verified} порогов")
 
 
 class TestMetroWorkflow:
@@ -227,7 +227,7 @@ class TestMetroWorkflow:
         vestibules = vestibules_data.get("data", [])
         assert len(vestibules) > 0, "Нет вестибюлей в системе"
         
-        print(f"✓ Шаг 1: Получено {len(vestibules)} вестибюлей")
+        print(f" Шаг 1: Получено {len(vestibules)} вестибюлей")
         
         # ===== Шаг 2: Получить пороги пассажиропотока =====
         thresholds_result = metro_client.get_vestibule_traffic_thresholds_list()
@@ -237,7 +237,7 @@ class TestMetroWorkflow:
         assert thresholds_data.get("success") is True, "Шаг 2: нет success=true"
         
         thresholds = thresholds_data.get("data", [])
-        print(f"✓ Шаг 2: Получено {len(thresholds)} порогов пассажиропотока")
+        print(f" Шаг 2: Получено {len(thresholds)} порогов пассажиропотока")
         
         # ===== Шаг 3: Получить отчет по пассажирам =====
         today = datetime.now()
@@ -250,8 +250,8 @@ class TestMetroWorkflow:
         traffic_data = traffic_result.json()
         assert traffic_data.get("success") is True, "Шаг 3: нет success=true"
         
-        print(f"✓ Шаг 3: Получен отчет за {today.strftime('%Y-%m-%d')}")
+        print(f" Шаг 3: Получен отчет за {today.strftime('%Y-%m-%d')}")
         
         # ===== Итоговая проверка workflow =====
-        print(f"\n✓ Workflow завершен успешно: {len(vestibules)} вестибюлей, {len(thresholds)} порогов, отчет получен")
+        print(f"\n Workflow завершен успешно: {len(vestibules)} вестибюлей, {len(thresholds)} порогов, отчет получен")
 

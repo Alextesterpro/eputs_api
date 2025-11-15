@@ -177,7 +177,7 @@ class TestReports:
             
             print(f"Пример расписания рейса: {first_schedule}")
         
-        print(f"✓ Flight schedules: получено {len(schedules)} записей")
+        print(f" Flight schedules: получено {len(schedules)} записей")
     
     def test_generate_flight_report_xlsx(self, external_transport_client):
         """Тест формирования отчета о прибытии в формате XLSX"""
@@ -204,11 +204,11 @@ class TestReports:
         if report_data is not None:
             if isinstance(report_data, dict):
                 # Может быть URL файла или другая информация
-                print(f"✓ Flight report XLSX: отчет сгенерирован: {report_data}")
+                print(f" Flight report XLSX: отчет сгенерирован: {report_data}")
             elif isinstance(report_data, str):
-                print(f"✓ Flight report XLSX: отчет сгенерирован (URL: {report_data})")
+                print(f" Flight report XLSX: отчет сгенерирован (URL: {report_data})")
         else:
-            print("✓ Flight report XLSX: запрос принят (data is None)")
+            print(" Flight report XLSX: запрос принят (data is None)")
     
     def test_generate_flight_report_ods(self, external_transport_client):
         """Тест формирования отчета о прибытии в формате ODS"""
@@ -235,11 +235,11 @@ class TestReports:
         if report_data is not None:
             if isinstance(report_data, dict):
                 # Может быть URL файла или другая информация
-                print(f"✓ Flight report ODS: отчет сгенерирован: {report_data}")
+                print(f" Flight report ODS: отчет сгенерирован: {report_data}")
             elif isinstance(report_data, str):
-                print(f"✓ Flight report ODS: отчет сгенерирован (URL: {report_data})")
+                print(f" Flight report ODS: отчет сгенерирован (URL: {report_data})")
         else:
-            print("✓ Flight report ODS: запрос принят (data is None)")
+            print(" Flight report ODS: запрос принят (data is None)")
     
     def test_passenger_count_report(self, external_transport_client):
         """Тест отчета по проходам ЖД"""
@@ -268,7 +268,7 @@ class TestReports:
             if "headers" in report_data:
                 headers = report_data["headers"]
                 assert isinstance(headers, dict), "Headers должны быть словарем"
-                print(f"✓ Passenger count report: headers найдены ({len(headers)} полей)")
+                print(f" Passenger count report: headers найдены ({len(headers)} полей)")
             
             if "rows" in report_data:
                 rows = report_data["rows"]
@@ -278,9 +278,9 @@ class TestReports:
                     first_row = rows[0]
                     print(f"Пример строки отчета: {first_row}")
                 
-                print(f"✓ Passenger count report: получено {len(rows)} строк")
+                print(f" Passenger count report: получено {len(rows)} строк")
             else:
-                print(f"✓ Passenger count report: структура отчета получена")
+                print(f" Passenger count report: структура отчета получена")
         
         elif isinstance(report_data, list):
             report = report_data
@@ -290,5 +290,5 @@ class TestReports:
                 first_item = report[0]
                 print(f"Пример данных проходов: {first_item}")
             
-            print(f"✓ Passenger count report: получено {len(report)} записей")
+            print(f" Passenger count report: получено {len(report)} записей")
 

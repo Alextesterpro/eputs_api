@@ -79,7 +79,7 @@ class TestIncidents:
         assert "id" in incident, "Отсутствует поле id"
         assert isinstance(incident["id"], int), "ID должен быть числом"
         
-        print(f"✓ GET by ID: получен инцидент ID={incident_id}, Name={incident.get('name', 'N/A')}")
+        print(f" GET by ID: получен инцидент ID={incident_id}, Name={incident.get('name', 'N/A')}")
     
     def test_incidents_pagination(self, incidents_client):
         """Тест пагинации инцидентов"""
@@ -113,7 +113,7 @@ class TestIncidents:
             
             common_ids = set(ids_page1) & set(ids_page2)
             assert len(common_ids) == 0, f"Найдены одинаковые ID на разных страницах: {common_ids}"
-            print("✓ Пагинация работает корректно: страницы содержат разные данные")
+            print(" Пагинация работает корректно: страницы содержат разные данные")
         
         print(f"Страница 1: {len(incidents1)} элементов, Страница 2: {len(incidents2)} элементов")
     
@@ -146,7 +146,7 @@ class TestIncidents:
         if "description" in incident:
             assert incident["description"] == description, f"Description не совпадает"
         
-        print(f"✓ CREATE: создан инцидент ID={incident_id}, Name='{name}'")
+        print(f" CREATE: создан инцидент ID={incident_id}, Name='{name}'")
     
     def test_incidents_update(self, incidents_client):
         """Тест обновления инцидента"""
@@ -182,9 +182,9 @@ class TestIncidents:
                 current_description = updated_data["data"]["description"]
                 assert current_description == new_description, \
                     f"Description не обновился: '{current_description}' != '{new_description}'"
-                print(f"✓ UPDATE: инцидент ID={incident_id} обновлен, description изменился")
+                print(f" UPDATE: инцидент ID={incident_id} обновлен, description изменился")
         else:
-            print(f"✓ UPDATE: инцидент ID={incident_id} обновлен (проверка изменений не выполнена)")
+            print(f" UPDATE: инцидент ID={incident_id} обновлен (проверка изменений не выполнена)")
     
     def test_incidents_delete(self, incidents_client):
         """Тест удаления инцидента"""
@@ -210,19 +210,19 @@ class TestIncidents:
         # Проверка статуса
         assert result.status_code in [200, 204], f"Delete failed: {result.status_code}"
         
-        print(f"✓ DELETE: инцидент ID={incident_id} удален")
+        print(f" DELETE: инцидент ID={incident_id} удален")
         
         # Проверка что инцидент действительно удален
         get_result = incidents_client.get_incident_by_id(incident_id)
         if get_result.status_code == 404:
-            print(f"✓ VERIFY: подтверждено удаление - инцидент ID={incident_id} не найден (404)")
+            print(f" VERIFY: подтверждено удаление - инцидент ID={incident_id} не найден (404)")
         elif get_result.status_code == 200:
             # Возможно API возвращает 200 с пустыми данными или флагом deleted
             get_data = get_result.json()
             if not get_data.get("data") or get_data.get("data", {}).get("deleted"):
-                print(f"✓ VERIFY: инцидент ID={incident_id} помечен как удаленный")
+                print(f" VERIFY: инцидент ID={incident_id} помечен как удаленный")
         else:
-                print(f"⚠ WARNING: инцидент ID={incident_id} все еще доступен после удаления")
+                print(f"WARNING: инцидент ID={incident_id} все еще доступен после удаления")
 
 
 if __name__ == "__main__":

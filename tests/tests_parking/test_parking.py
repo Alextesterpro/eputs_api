@@ -84,7 +84,7 @@ class TestParking:
             
             common_ids = set(ids1) & set(ids2)
             assert len(common_ids) == 0, f"Найдены одинаковые ID на разных страницах: {common_ids}"
-            print("✓ Пагинация: страницы содержат разные данные")
+            print(" Пагинация: страницы содержат разные данные")
         
         print(f"Страница 1: {len(parkings1)}, Страница 2: {len(parkings2)}")
 
@@ -143,7 +143,7 @@ class TestParkingCRUD:
         if "lon" in parking:
             assert abs(parking["lon"] - lon) < 0.0001, "Longitude не совпадает"
         
-        print(f"✓ CREATE: парковка ID={parking_id}, name='{name}'")
+        print(f" CREATE: парковка ID={parking_id}, name='{name}'")
     
     def test_parking_update(self, parking_client):
         """Тест обновления парковки"""
@@ -214,7 +214,7 @@ class TestParkingCRUD:
                 assert updated_parking["name"] == updated_name, "Name не обновился"
                 assert updated_parking["name"] != original_name, "Name не изменился"
         
-        print(f"✓ UPDATE: парковка ID={parking_id} обновлена, name='{updated_name}'")
+        print(f" UPDATE: парковка ID={parking_id} обновлена, name='{updated_name}'")
     
     def test_parking_delete(self, parking_client):
         """Тест удаления парковки"""
@@ -249,7 +249,7 @@ class TestParkingCRUD:
         delete_data = delete_result.json()
         assert delete_data.get("success") is True, "Отсутствует success=true при удалении"
         
-        print(f"✓ DELETE: парковка ID={parking_id} удалена")
+        print(f" DELETE: парковка ID={parking_id} удалена")
 
 
 class TestParkingWorkflow:
@@ -282,7 +282,7 @@ class TestParkingWorkflow:
         assert create_data.get("success") is True, "Шаг 1: нет success=true"
         
         parking_id = create_data["data"]["id"]
-        print(f"✓ Шаг 1 (CREATE): парковка ID={parking_id}, name='{name}'")
+        print(f" Шаг 1 (CREATE): парковка ID={parking_id}, name='{name}'")
         
         # ===== Шаг 2: UPDATE =====
         updated_name = f"Обновленная парковка {random_int}"
@@ -314,7 +314,7 @@ class TestParkingWorkflow:
         assert update_result.status_code == 200, "Шаг 2 (UPDATE) failed"
         assert update_result.json().get("success") is True, "Шаг 2: нет success=true"
         
-        print(f"✓ Шаг 2 (UPDATE): парковка ID={parking_id} обновлена, new_name='{updated_name}'")
+        print(f" Шаг 2 (UPDATE): парковка ID={parking_id} обновлена, new_name='{updated_name}'")
         
         # ===== Шаг 3: VERIFY в списке =====
         list_result = parking_client.get_parking_list(page=1, limit=100)
@@ -325,15 +325,15 @@ class TestParkingWorkflow:
         parking_exists = any(p.get("id") == parking_id for p in parkings)
         
         assert parking_exists, f"Шаг 3: парковка ID={parking_id} не найдена в списке"
-        print(f"✓ Шаг 3 (VERIFY): парковка ID={parking_id} найдена в списке")
+        print(f" Шаг 3 (VERIFY): парковка ID={parking_id} найдена в списке")
         
         # ===== Шаг 4: DELETE =====
         delete_result = parking_client.delete_parking(parking_id)
         assert delete_result.status_code == 200, "Шаг 4 (DELETE) failed"
         assert delete_result.json().get("success") is True, "Шаг 4: нет success=true"
         
-        print(f"✓ Шаг 4 (DELETE): парковка ID={parking_id} удалена")
+        print(f" Шаг 4 (DELETE): парковка ID={parking_id} удалена")
         
         # ===== Итог =====
-        print(f"\n✓ Workflow завершен успешно: CREATE -> UPDATE -> VERIFY -> DELETE")
+        print(f"\n Workflow завершен успешно: CREATE -> UPDATE -> VERIFY -> DELETE")
 

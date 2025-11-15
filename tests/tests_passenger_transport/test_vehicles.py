@@ -80,7 +80,7 @@ class TestVehiclesCRUD:
         assert isinstance(vehicle_id, int), "ID должен быть числом"
         assert vehicle_id > 0, "ID должен быть положительным"
         
-        print(f"✓ CREATE: ТС ID={vehicle_id}, number='{number}'")
+        print(f"CREATE: ТС ID={vehicle_id}, number='{number}'")
     
     def test_vehicle_workflow(self, passenger_transport_client):
         """Workflow: CREATE -> UPDATE -> GET_CARD -> DELETE ТС"""
@@ -105,7 +105,7 @@ class TestVehiclesCRUD:
         assert create_data.get("success") is True, "Шаг 1: нет success=true"
         
         vehicle_id = create_data["data"]["id"]
-        print(f"✓ Шаг 1 (CREATE): ТС ID={vehicle_id}, number='{number}'")
+        print(f"Шаг 1 (CREATE): ТС ID={vehicle_id}, number='{number}'")
         
         # ===== Шаг 2: UPDATE =====
         updated_number = str(random_int + 100)
@@ -125,7 +125,7 @@ class TestVehiclesCRUD:
         update_data = update_result.json()
         assert update_data.get("success") is True, "Шаг 2: нет success=true"
         
-        print(f"✓ Шаг 2 (UPDATE): ТС ID={vehicle_id} обновлено, new_number='{updated_number}'")
+        print(f"Шаг 2 (UPDATE): ТС ID={vehicle_id} обновлено, new_number='{updated_number}'")
         
         # ===== Шаг 3: GET CARD =====
         card_result = passenger_transport_client.get_vehicle_card(vehicle_id)
@@ -134,7 +134,7 @@ class TestVehiclesCRUD:
         card_data = card_result.json()
         assert card_data.get("success") is True, "Шаг 3: нет success=true"
         
-        print(f"✓ Шаг 3 (GET_CARD): учетная карточка ТС ID={vehicle_id} получена")
+        print(f"Шаг 3 (GET_CARD): учетная карточка ТС ID={vehicle_id} получена")
         
         # ===== Шаг 4: DELETE =====
         delete_result = passenger_transport_client.delete_vehicle(vehicle_id)
@@ -143,8 +143,8 @@ class TestVehiclesCRUD:
         delete_data = delete_result.json()
         assert delete_data.get("success") is True, "Шаг 4: нет success=true"
         
-        print(f"✓ Шаг 4 (DELETE): ТС ID={vehicle_id} удалено")
-        print(f"\n✓ Workflow завершен успешно: CREATE -> UPDATE -> GET_CARD -> DELETE")
+        print(f"Шаг 4 (DELETE): ТС ID={vehicle_id} удалено")
+        print(f"\nWorkflow завершен успешно: CREATE -> UPDATE -> GET_CARD -> DELETE")
 
 
 class TestVehicleReports:
@@ -167,9 +167,9 @@ class TestVehicleReports:
         if result.status_code == 200:
             data = result.json()
             assert data.get("success") is True, "Отсутствует success=true"
-            print(f"✓ История перемещений ТС ID={vehicle_id} получена")
+            print(f"История перемещений ТС ID={vehicle_id} получена")
         else:
-            print(f"ℹ ТС ID={vehicle_id} не найдено (это нормально для тестов)")
+            print(f"ТС ID={vehicle_id} не найдено (это нормально для тестов)")
     
     def test_generate_vehicle_report(self, passenger_transport_client):
         """Тест генерации отчета по ТС"""
@@ -189,8 +189,8 @@ class TestVehicleReports:
         if result.status_code == 200:
             data = result.json()
             assert data.get("success") is True, "Отсутствует success=true"
-            print(f"✓ Отчет по ТС ID={vehicle_id} сгенерирован")
+            print(f"Отчет по ТС ID={vehicle_id} сгенерирован")
         else:
-            print(f"ℹ ТС ID={vehicle_id} не найдено (это нормально для тестов)")
+            print(f"ТС ID={vehicle_id} не найдено (это нормально для тестов)")
 
 

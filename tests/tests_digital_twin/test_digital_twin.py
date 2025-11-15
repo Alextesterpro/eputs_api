@@ -59,7 +59,7 @@ class TestInfrastructure:
         items = data.get("data", [])
         assert isinstance(items, list), "Data должна быть списком"
         
-        print(f"✓ Infrastructure by polygon: найдено {len(items)} объектов")
+        print(f" Infrastructure by polygon: найдено {len(items)} объектов")
 
 
 class TestInfrastructureTypes:
@@ -122,7 +122,7 @@ class TestInfrastructureTypes:
         if "name" in created_type:
             assert created_type["name"] == type_name, "Name не совпадает"
         
-        print(f"✓ CREATE: тип инфраструктуры ID={type_id}, name='{type_name}'")
+        print(f" CREATE: тип инфраструктуры ID={type_id}, name='{type_name}'")
     
     def test_infrastructure_type_workflow(self, digital_twin_client):
         """Workflow: CREATE -> UPDATE -> DELETE типа"""
@@ -138,7 +138,7 @@ class TestInfrastructureTypes:
         assert create_data.get("success") is True, "Шаг 1: нет success=true"
         
         type_id = create_data["data"]["id"]
-        print(f"✓ Шаг 1 (CREATE): тип ID={type_id}, name='{original_name}'")
+        print(f" Шаг 1 (CREATE): тип ID={type_id}, name='{original_name}'")
         
         # ===== Шаг 2: UPDATE =====
         updated_name = f"Апи редактирование {random_int}"
@@ -154,7 +154,7 @@ class TestInfrastructureTypes:
             assert update_data["data"]["name"] == updated_name, "Шаг 2: name не обновился"
             assert update_data["data"]["name"] != original_name, "Шаг 2: name не изменился"
         
-        print(f"✓ Шаг 2 (UPDATE): тип ID={type_id} обновлен, new_name='{updated_name}'")
+        print(f" Шаг 2 (UPDATE): тип ID={type_id} обновлен, new_name='{updated_name}'")
         
         # ===== Шаг 3: DELETE =====
         delete_result = digital_twin_client.delete_infrastructure_type(type_id)
@@ -163,8 +163,8 @@ class TestInfrastructureTypes:
         delete_data = delete_result.json()
         assert delete_data.get("success") is True, "Шаг 3: нет success=true"
         
-        print(f"✓ Шаг 3 (DELETE): тип ID={type_id} удален")
-        print(f"\n✓ Workflow завершен успешно: CREATE -> UPDATE -> DELETE")
+        print(f" Шаг 3 (DELETE): тип ID={type_id} удален")
+        print(f"\n Workflow завершен успешно: CREATE -> UPDATE -> DELETE")
 
 
 class TestRoadSections:
@@ -213,7 +213,7 @@ class TestRoadSections:
         sections = data.get("data", [])
         assert isinstance(sections, list), "Data должна быть списком"
         
-        print(f"✓ Road sections by polygon: найдено {len(sections)} элементов")
+        print(f" Road sections by polygon: найдено {len(sections)} элементов")
     
     def test_road_section_report_xls(self, digital_twin_client):
         """Тест получения отчета XLS"""
@@ -229,7 +229,7 @@ class TestRoadSections:
         # Проверка что отчет сгенерирован
         assert data.get("data") is not None, "Отчет не сгенерирован (data is None)"
         
-        print("✓ Road section XLS report: отчет сгенерирован")
+        print(" Road section XLS report: отчет сгенерирован")
     
     def test_road_section_report_csv(self, digital_twin_client):
         """Тест получения отчета CSV"""
@@ -245,7 +245,7 @@ class TestRoadSections:
         # Проверка что отчет сгенерирован
         assert data.get("data") is not None, "Отчет не сгенерирован (data is None)"
         
-        print("✓ Road section CSV report: отчет сгенерирован")
+        print(" Road section CSV report: отчет сгенерирован")
 
 
 class TestGraph:
@@ -279,12 +279,12 @@ class TestGraph:
         if has_edges:
             edges = data["edges"]
             assert isinstance(edges, list), "Edges должен быть списком"
-            print(f"✓ Get graph: найдено {len(edges)} ребер (edges)")
+            print(f" Get graph: найдено {len(edges)} ребер (edges)")
         
         if has_nodes:
             nodes = data["nodes"]
             assert isinstance(nodes, list), "Nodes должен быть списком"
-            print(f"✓ Get graph: найдено {len(nodes)} узлов (nodes)")
+            print(f" Get graph: найдено {len(nodes)} узлов (nodes)")
 
 
 class TestRevisions:
